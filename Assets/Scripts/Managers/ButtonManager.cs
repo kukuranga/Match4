@@ -207,13 +207,7 @@ public class ButtonManager : Singleton<ButtonManager>
 
         if(_CorrectAnswers == _ButtonsRow.Count)
         {
-            if (RewardsManager.Instance.RollForRewards()) //--------------------------------------------------------------HERE------------------------------------------------------------------
-            {
-                //RewardsManager.Instance.SetRewards(_RewardButton1, _RewardButton2, _RewardButton3);
-                //_GameRewardsScreen.SetActive(true);
-            }
-            else
-                _GameWonScreen.SetActive(true);
+            _GameWonScreen.SetActive(true);
 
             GameManager.Instance.StoreMoves(_MovesLeft);
             _CharacterController.SetAttack(true);

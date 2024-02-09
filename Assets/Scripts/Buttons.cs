@@ -28,6 +28,7 @@ public class Buttons : MonoBehaviour
 
     private RectTransform _rect;
     private Quaternion _StartingRotation;
+    private bool AlreadyChecked = false;
 
     //Dance
     private float _originalYPosition;
@@ -55,15 +56,18 @@ public class Buttons : MonoBehaviour
         if(_CorrectPosition == _Container._Index)
         {
             _Container.SetCorrect();
-            switch(_ItemType)
+            if (!AlreadyChecked)
             {
-                case ItemType.GoldenItem:
-                    ButtonManager.Instance.ResetMoves();
-                    break;
-                case ItemType.TreasureItem:
-                    //Open Treasure scene
-                    ButtonManager.Instance._GameRewardsScreen.SetActive(true);
-                    break;
+                switch (_ItemType)
+                {
+                    case ItemType.GoldenItem:
+                        ButtonManager.Instance.ResetMoves();
+                        break;
+                    case ItemType.TreasureItem:
+                        ButtonManager.Instance._GameRewardsScreen.SetActive(true);
+                        break;
+                }
+                AlreadyChecked = true;
             }
         }
         else
@@ -129,6 +133,7 @@ public class Buttons : MonoBehaviour
     {
         _ItemType = ItemType.TreasureItem;
         SetSprite(RewardsManager.Instance._TreasureSprite);
+        _GoldenImage.SetActive(true);
     }
 
     public void CreateButtons()

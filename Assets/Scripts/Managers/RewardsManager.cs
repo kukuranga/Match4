@@ -121,7 +121,6 @@ public class RewardsManager : Singleton<RewardsManager>
 
         //TODO: Make repeats of the same value not possible
 
-        return null;
     }
 
     private void SetButtonProperties(RewardButton r)

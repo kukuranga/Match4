@@ -2,21 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MoveInDirection
-{
-    MoveDown,
-    MoveUp,
-    MoveLeft,
-    MoveRight,
-}
-
 public class MoveUpOnActive : MonoBehaviour
 {
 
     private Vector2 _StartingPos;
-    private Camera _MainCamera;
     private RectTransform _RT;
-    //public RectTransform _OutsidePosition;
+    public RectTransform _OutsidePosition;
     public float _Speed;
 
 
@@ -24,23 +15,20 @@ public class MoveUpOnActive : MonoBehaviour
     {
         _RT = this.GetComponent<RectTransform>();
         _StartingPos = _RT.anchoredPosition;
-        _MainCamera = Camera.main;
     }
 
     private void Start()
     {
-        MoveDown();
+        SceneLoader.Instance.onSceneLoadedEvent.AddListener(MoveDown);
     }
     private void FixedUpdate()
     {
         LerpToPoint();
     }
 
-    private void MoveDown()
+    private void MoveDown(List<string> s)
     {
-        Vector3 bottomOfCameraViewport = new Vector3(0f, 0f, _MainCamera.nearClipPlane);
-        Vector3 bottomWorldPosition = _MainCamera.ViewportToWorldPoint(bottomOfCameraViewport);
-        transform.position = new Vector3(transform.position.x, bottomWorldPosition.y - 100, transform.position.z);
+        _RT.anchoredPosition = _OutsidePosition.anchoredPosition;
     }
 
     private void LerpToPoint()
