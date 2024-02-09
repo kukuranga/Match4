@@ -1422,6 +1422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 542467e4d3af45f44a1311dda6845f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _TreasureSprite: {fileID: 21300000, guid: c8303e833b0ef184e99c1bc8940fff84, type: 3}
   _Rewards:
   - {fileID: 11400000, guid: 858f155db9c6ba54aa62aba669736869, type: 2}
   - {fileID: 11400000, guid: c99d8fc127a28fb479e5a11764a98a76, type: 2}
@@ -1433,6 +1434,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3d36d869a234e24d81b70b426de0161, type: 2}
   - {fileID: 11400000, guid: 4f3b28abaf886664ba49b0046e247a04, type: 2}
   - {fileID: 11400000, guid: 0b256c72f2a9bf44c9ad60a0df26a532, type: 2}
+  _Luck: 0
 --- !u!4 &2093436374
 Transform:
   m_ObjectHideFlags: 0

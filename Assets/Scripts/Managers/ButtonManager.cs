@@ -207,10 +207,10 @@ public class ButtonManager : Singleton<ButtonManager>
 
         if(_CorrectAnswers == _ButtonsRow.Count)
         {
-            if (RewardsManager.Instance.RollForRewards())
+            if (RewardsManager.Instance.RollForRewards()) //--------------------------------------------------------------HERE------------------------------------------------------------------
             {
-                RewardsManager.Instance.SetRewards(_RewardButton1, _RewardButton2, _RewardButton3);
-                _GameRewardsScreen.SetActive(true);
+                //RewardsManager.Instance.SetRewards(_RewardButton1, _RewardButton2, _RewardButton3);
+                //_GameRewardsScreen.SetActive(true);
             }
             else
                 _GameWonScreen.SetActive(true);
@@ -354,10 +354,37 @@ public class ButtonManager : Singleton<ButtonManager>
         }
         if (GameManager.Instance.SpawnGoldenItem())
         {
-            int a = Random.Range(0, _ButtonsRow.Count);
-            _ButtonsRow[a]._GoldenItem = true;
+            //int a = Random.Range(0, _ButtonsRow.Count);
+            //_ButtonsRow[a]._GoldenItem = true;
+            int a = GetNormalItem();
+            _ButtonsRow[a].SetGoldenItem();
             _ButtonsRow[a]._Image.color = Color.yellow;
         }
+        if(RewardsManager.Instance.RollForRewards()) //-------------------------------------------------------------------HERE--------------------------------------------------------------------
+        {
+            RewardsManager.Instance.SetRewards(_RewardButton1, _RewardButton2, _RewardButton3);
+            int a = GetNormalItem();
+            _ButtonsRow[a].SetTreasureItem();
+        }
+    }
+
+    private List<int> normalItemIndices = new List<int>();
+
+    private int GetNormalItem()
+    {
+        if (normalItemIndices.Count == 0)
+        {
+            for(int i = 0; i< _ButtonsRow.Count; i++)
+            {
+                if (_ButtonsRow[i]._ItemType == ItemType.NormalItem)
+                    normalItemIndices.Add(i);
+            }
+        }
+
+        int a = Random.Range(0,normalItemIndices.Count);
+        normalItemIndices.Remove(a);
+
+        return a;
     }
 
     Sprite GetRandomSprite()

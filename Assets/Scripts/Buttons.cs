@@ -4,10 +4,18 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum ItemType
+{
+    NormalItem,
+    GoldenItem,
+    TreasureItem,
+}
+
 public class Buttons : MonoBehaviour
 {
     //flag if the item is the Golden Button 
-    public bool _GoldenItem = false; //Change code to enum for ItemType
+    //public bool _GoldenItem = false; //Change code to enum for ItemType
+    public ItemType _ItemType = ItemType.NormalItem;
 
     public int _Index = 0;
     public int _CorrectPosition = 0;
@@ -47,8 +55,16 @@ public class Buttons : MonoBehaviour
         if(_CorrectPosition == _Container._Index)
         {
             _Container.SetCorrect();
-            if (_GoldenItem)
-                ButtonManager.Instance.ResetMoves();
+            switch(_ItemType)
+            {
+                case ItemType.GoldenItem:
+                    ButtonManager.Instance.ResetMoves();
+                    break;
+                case ItemType.TreasureItem:
+                    //Open Treasure scene
+                    ButtonManager.Instance._GameRewardsScreen.SetActive(true);
+                    break;
+            }
         }
         else
         {
@@ -64,8 +80,14 @@ public class Buttons : MonoBehaviour
         _amplitude = Random.Range(1, 3.5f);
         _frequency = Random.Range(3, 10);
         _StartingRotation = this.transform.rotation;
-        if (_GoldenItem)
-            _GoldenImage.SetActive(true);
+        switch (_ItemType)
+        {
+            case ItemType.GoldenItem:
+                _GoldenImage.SetActive(true);
+                break;
+            case ItemType.TreasureItem:
+                break;
+        }
             
     }
 
@@ -98,6 +120,16 @@ public class Buttons : MonoBehaviour
         
     }
 
+    public void SetGoldenItem()
+    {
+        _ItemType = ItemType.GoldenItem;
+    }
+
+    public void SetTreasureItem()
+    {
+        _ItemType = ItemType.TreasureItem;
+        SetSprite(RewardsManager.Instance._TreasureSprite);
+    }
 
     public void CreateButtons()
     {

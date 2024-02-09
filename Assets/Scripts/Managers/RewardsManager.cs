@@ -6,6 +6,7 @@ public class RewardsManager : Singleton<RewardsManager>
 {
 
     //Reward or power up Screen
+    public Sprite _TreasureSprite;
     [SerializeField] private List<Reward> _Rewards = new List<Reward>();
     private List<Reward> _CommonRewards = new List<Reward>();
     private List<Reward> _UncommonRewards = new List<Reward>();
@@ -15,7 +16,7 @@ public class RewardsManager : Singleton<RewardsManager>
     private List<Reward> _ActiveRewards = new List<Reward>();
     private float _RewardsChance = 0.5f;
     [Range(0,9)]
-    private int _Luck = 0;  
+    public int _Luck = 0;  
     private float[,] _LuckTable = new float[,]
     {
         {95f,90f,80f,75f,70f,60f,45f,30f,20f,10f},//Common

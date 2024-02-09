@@ -16,10 +16,12 @@ public class RewardButton : MonoBehaviour
         _Reward.Activate();
         //Move on with the scene
 
-        if (GameManager.Instance._GameOver)
-            GameManager.Instance.ResetGame();
-        SceneLoader.Instance.UnloadScene(GameManager.Instance._LevelToLoad);
-        SceneLoader.Instance.LoadScene(GameManager.Instance._LevelToLoad);
+        ButtonManager.Instance._GameRewardsScreen.SetActive(false);
+
+        //if (GameManager.Instance._GameOver)
+        //    GameManager.Instance.ResetGame();
+        //SceneLoader.Instance.UnloadScene(GameManager.Instance._LevelToLoad);
+        //SceneLoader.Instance.LoadScene(GameManager.Instance._LevelToLoad);
     }
 
 }
