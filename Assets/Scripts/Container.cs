@@ -8,13 +8,15 @@ public class Container : MonoBehaviour
 
     public int _Index;
     public GameObject _CorrectGO;
-
     public Material _Material;
+
+    private RectTransform _rect;
 
     private void Awake()
     {
         _Index = ButtonManager.Instance.GetContIndex();
         ButtonManager.Instance.AddToContainers(this);
+        _rect = GetComponent<RectTransform>();
     }
 
     void Start()
@@ -35,5 +37,10 @@ public class Container : MonoBehaviour
     public void UnSetCorrect()
     {
         _CorrectGO.SetActive(false);
+    }
+
+    public RectTransform GetRectTransform()
+    {
+        return _rect;
     }
 }

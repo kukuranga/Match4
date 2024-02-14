@@ -32,13 +32,15 @@ public class Buttons : MonoBehaviour
 
     //Dance
     private float _originalYPosition;
+    private bool _Dance = true;
     public float _amplitude = 20f; // Adjust this value to control the amplitude of the dance
     public float _frequency = 7f; // Adjust this value to control the frequency of the dance
 
 
     private void Update()
     {
-        Dance();
+        if(_Dance)
+            Dance();
     }
 
     private void Awake()
@@ -49,6 +51,11 @@ public class Buttons : MonoBehaviour
         _Image = GetComponent<Image>();
         _rect = GetComponent<RectTransform>();
 
+    }
+
+    public RectTransform GetRectTransform()
+    {
+        return _rect;
     }
 
     public void CheckCorrect()
@@ -133,6 +140,7 @@ public class Buttons : MonoBehaviour
     {
         _ItemType = ItemType.TreasureItem;
         SetSprite(RewardsManager.Instance._TreasureSprite);
+        _Image.color = Color.blue;
         _GoldenImage.SetActive(true);
     }
 
@@ -191,8 +199,11 @@ public class Buttons : MonoBehaviour
         _rect.localScale = new Vector3(ScaleFactor, ScaleFactor, 1f);
     }
 
+    public void SetDance(bool value)
+    {
+        _Dance = value;
+    }
     
-
     private void Dance()
     {
         float offsetY = _amplitude * Mathf.Sin(Time.time * _frequency);

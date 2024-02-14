@@ -151,16 +151,64 @@ public class ButtonManager : Singleton<ButtonManager>
         a._Container = cB;
         b._Container = cA;
 
-        Vector3 aV = a.transform.position;
-        Vector3 bV = b.transform.position;
+        //Vector3 aV = a.transform.position;
+        //Vector3 bV = b.transform.position;
 
-        a.transform.position = bV;
-        b.transform.position = aV;
+        Vector2 aV = a.GetRectTransform().anchoredPosition;
+        Vector2 bV = b.GetRectTransform().anchoredPosition;
+
+        StartCoroutine(MoveToPosition(a, aV));
+        StartCoroutine(MoveToPosition(b, bV));
+
+        
+
+        //a.transform.position = bV;
+        //b.transform.position = aV;
+
+        //a.ResetAnchor();
+        //b.ResetAnchor();
+        //CheckPositions();
+
+    }
+
+    private float _ItemMoveSpeed = 1500f;
+
+    IEnumerator MoveToPosition(Buttons a , Vector2 target)
+    {
+        RectTransform _r = a.GetRectTransform();
+        Vector2 startPosition = _r.anchoredPosition; //a.transform.position;
+        Vector2 targetPosition = a._Container.GetRectTransform().anchoredPosition; //target;
+
+        // Calculate the distance to move
+        float distance = Vector2.Distance(startPosition, targetPosition);
+        a.SetInteractable(false);
+        a.SetDance(false);
+
+        // Move towards the target position while the distance is greater than a small threshold
+        while (distance > 0.1f)
+        {
+            // Calculate the new position based on current position, target position, and speed
+            Vector2 newPosition = Vector2.MoveTowards(_r.anchoredPosition, targetPosition, _ItemMoveSpeed * Time.deltaTime);
+
+            // Update the UI object's position
+            _r.anchoredPosition = newPosition;
+
+            // Update the distance to the target position
+            distance = Vector2.Distance(_r.anchoredPosition, targetPosition);
+
+            // Wait for the next frame
+            yield return null;
+        }
+
+        // Ensure precise positioning at the target position
+        _r.anchoredPosition = targetPosition;
 
         a.ResetAnchor();
-        b.ResetAnchor();
+        a.SetInteractable(true);
+        a.SetDance(true);
         CheckPositions();
 
+        yield return null;
     }
 
     //----- Collection of getters and setters for various components tracked by this script ----------------------------
