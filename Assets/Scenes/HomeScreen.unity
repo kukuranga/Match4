@@ -159,8 +159,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -35.047}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -396, y: -406}
-  m_SizeDelta: {x: 1169.024, y: 6699.173}
+  m_AnchoredPosition: {x: -2290, y: -2809}
+  m_SizeDelta: {x: 1954.757, y: 11098.538}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &22537609
 MonoBehaviour:
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.735849, g: 0.26032394, b: 0.5226687, a: 1}
+  m_Color: {r: 0.65263695, g: 0.3300107, b: 0.6792453, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _OutsidePosition: {fileID: 2038879146}
-  _Speed: 0.5
+  _Speed: 0.05
 --- !u!1 &28276572
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,8 +605,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290986506
-  m_fontColor: {r: 0.039649345, g: 0.25741073, b: 0.764151, a: 1}
+    rgba: 4291519171
+  m_fontColor: {r: 0.76470596, g: 0.38431376, b: 0.7960785, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -942,7 +942,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.4039216, g: 0.1764706, b: 0.42352945, a: 0}
+  m_BackGroundColor: {r: 0.7726484, g: 0.38652548, b: 0.8113208, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1124,6 +1124,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4413, y: 5387}
+  m_AnchoredPosition: {x: 1769, y: 2717}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

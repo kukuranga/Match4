@@ -151,23 +151,12 @@ public class ButtonManager : Singleton<ButtonManager>
         a._Container = cB;
         b._Container = cA;
 
-        //Vector3 aV = a.transform.position;
-        //Vector3 bV = b.transform.position;
-
         Vector2 aV = a.GetRectTransform().anchoredPosition;
         Vector2 bV = b.GetRectTransform().anchoredPosition;
 
         StartCoroutine(MoveToPosition(a, aV));
         StartCoroutine(MoveToPosition(b, bV));
 
-        
-
-        //a.transform.position = bV;
-        //b.transform.position = aV;
-
-        //a.ResetAnchor();
-        //b.ResetAnchor();
-        //CheckPositions();
 
     }
 

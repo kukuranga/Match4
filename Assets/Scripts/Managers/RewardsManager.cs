@@ -32,13 +32,16 @@ public class RewardsManager : Singleton<RewardsManager>
 
     private void Start()
     {
-        //Debug.Log(_LuckTable[1, 2]); //15
-
 
         //Adds each reward to its correct list
-        foreach(Reward  r in _Rewards)
+        SortRewards(_Rewards);
+    }
+
+    private void SortRewards(List<Reward> rewards)
+    {
+        foreach (Reward r in rewards)
         {
-            switch(r._Rarity)
+            switch (r._Rarity)
             {
                 case Rarity.Common:
                     _CommonRewards.Add(r);
@@ -72,9 +75,11 @@ public class RewardsManager : Singleton<RewardsManager>
         //Todo: chose a random reward to set up on each of these buttons based on rarity and chance of showing up
         //set the image text and info for each reward here
 
-        r1._Reward = GetAReward();
-        r2._Reward = GetAReward();
-        r3._Reward = GetAReward();
+        List<Reward> re = GetAllRewards();
+
+        r1._Reward = re[0];
+        r2._Reward = re[1];
+        r3._Reward = re[2];
         SetButtonProperties(r1);
         SetButtonProperties(r2);
         SetButtonProperties(r3);
@@ -88,6 +93,25 @@ public class RewardsManager : Singleton<RewardsManager>
             return true;
         return false;
     }
+
+    private List<Reward> GetAllRewards()
+    {
+        List<Reward> rewards = new List<Reward>();
+
+        Reward a = GetAReward();
+        Reward b = GetAReward();
+        Reward c = GetAReward();
+
+
+        rewards.Add(a);
+        rewards.Add(b);
+        rewards.Add(c);
+
+        SortRewards(rewards);
+        return rewards;
+
+    }
+
 
     private Reward GetAReward()
     {
@@ -104,23 +128,28 @@ public class RewardsManager : Singleton<RewardsManager>
 
         if(_val < _myth)
         {
-            return _MythicRewards[Random.Range(0, _MythicRewards.Count)];
+            Reward r = _MythicRewards[Random.Range(0, _MythicRewards.Count)];
+            _MythicRewards.Remove(r);
+            return r;
         }
         else if (_val < _rare)
         {
-            return _RareRewards[Random.Range(0, _RareRewards.Count)];
+            Reward r = _RareRewards[Random.Range(0, _RareRewards.Count)];
+            _RareRewards.Remove(r);
+            return r;
         }
         else if (_val < _uncomm)
         {
-            return _UncommonRewards[Random.Range(0, _UncommonRewards.Count)];
+            Reward r =  _UncommonRewards[Random.Range(0, _UncommonRewards.Count)];
+            _UncommonRewards.Remove(r);
+            return r;
         }
         else
         {
-            return _CommonRewards[Random.Range(0, _CommonRewards.Count)];
+            Reward r = _CommonRewards[Random.Range(0, _CommonRewards.Count)];
+            _CommonRewards.Remove(r);
+            return r;
         }
-
-        //TODO: Make repeats of the same value not possible
-
     }
 
     private void SetButtonProperties(RewardButton r)
