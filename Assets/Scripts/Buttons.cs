@@ -9,6 +9,7 @@ public enum ItemType
     NormalItem,
     GoldenItem,
     TreasureItem,
+    MotionItem,
 }
 
 public class Buttons : MonoBehaviour
@@ -50,7 +51,7 @@ public class Buttons : MonoBehaviour
         btn = GetComponent<Button>();
         _Image = GetComponent<Image>();
         _rect = GetComponent<RectTransform>();
-
+        CheckItem(); //Checks the item type to give this item
     }
 
     public RectTransform GetRectTransform()
@@ -58,6 +59,20 @@ public class Buttons : MonoBehaviour
         return _rect;
     }
 
+    //Checks the item type to give this item
+    private void CheckItem()
+    {
+        //Items sorted with presidence, the lower the item the higher the priority
+
+        
+
+        if (GameManager.Instance.SpawnGoldenItem())
+        {
+            SetGoldenItem();
+        }
+    }
+
+    private bool _CheckedAlready = false;
     public void CheckCorrect()
     {
         if(_CorrectPosition == _Container._Index)
@@ -68,7 +83,11 @@ public class Buttons : MonoBehaviour
                 switch (_ItemType)
                 {
                     case ItemType.GoldenItem:
-                        ButtonManager.Instance.ResetMoves();
+                        if (!_CheckedAlready)
+                        {
+                            _CheckedAlready = true;
+                            ButtonManager.Instance.ResetMoves();
+                        }
                         break;
                     case ItemType.TreasureItem:
                         ButtonManager.Instance._GameRewardsScreen.SetActive(true);
@@ -134,6 +153,7 @@ public class Buttons : MonoBehaviour
     public void SetGoldenItem()
     {
         _ItemType = ItemType.GoldenItem;
+        _Image.color = Color.yellow;
     }
 
     public void SetTreasureItem()

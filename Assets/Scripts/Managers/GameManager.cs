@@ -11,17 +11,16 @@ public class GameManager : Singleton<GameManager>
     public SceneReference _GameOverScene;
     //Set scene to load when the game starts
     public SceneReference _LevelToLoad;
-    private int _MovesToGive = 5;
     public int _RowsToGive = 1;
     public bool _GameOver = false;
+
     private int _MovesLeft = 0;
+    private int _MovesToGive = 5;
 
     //GoldItem
     [SerializeField] private float _GoldenItemChance = 0.3f;
     private int _GoldenItemBonus = 10;
-    //Event chance
-
-
+    
     private void CheckLevel()
     {
         Debug.Log("Level checkd");
@@ -54,7 +53,6 @@ public class GameManager : Singleton<GameManager>
             default:
                 //_MovesToGive--;
                 break;
-
         }
     }
 
@@ -73,11 +71,17 @@ public class GameManager : Singleton<GameManager>
         return _GoldenItemBonus;
     }
 
+    private int _SpawnDecay = 1;
+
     public bool SpawnGoldenItem()
     {
+        Debug.Log("Spawn decay = :" + _SpawnDecay);
         float c = Random.Range(0f, 1f);
-        if (c <= _GoldenItemChance)
+        if (c <= (_GoldenItemChance / _SpawnDecay))
+        {
+            _SpawnDecay++;
             return true;
+        }
 
         return false;
     }
@@ -102,7 +106,6 @@ public class GameManager : Singleton<GameManager>
     {
         if (!_GameOver)
         {
-            //SceneLoader.Instance.LoadScene(_GameOverScene);
             ResetGame();
             _GameOver = true;
         }
@@ -110,6 +113,7 @@ public class GameManager : Singleton<GameManager>
     public void GameWon()
     {
         SetMoves();
+        _SpawnDecay = 1;
         _Level++;
         CheckLevel();
     }
@@ -118,10 +122,8 @@ public class GameManager : Singleton<GameManager>
     {
         _Level = 1;
         _MovesLeft = 0;
+        _SpawnDecay = 1;
         _GameOver = false;
         CheckLevel();
     }
-
-    
-    
 }

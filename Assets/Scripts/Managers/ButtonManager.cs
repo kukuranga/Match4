@@ -61,20 +61,14 @@ public class ButtonManager : Singleton<ButtonManager>
         _WinText.text = GameManager.Instance._Level.ToString();//_CorrectAnswers.ToString();
         if(_MovesLeft <= 0)
         {
-            //GameManager.Instance.GameOver();
             _GameOverScreen.SetActive(true);
         }
     }
     
-    //Resets Moves after golden Item is correctly placed
-    private bool _AlreadyReset = false;
+    //resets moves when a gold item triggers
     public void ResetMoves() //TODO CHANGE THE VALUE TO DOUBLE THE AMOUNT OF MOVES LEFT ------------------------------------------------
     {
-        if(!_AlreadyReset)
-        {
-            _AlreadyReset = true;
-            _MovesLeft += GameManager.Instance.GetGoldenBonus();
-        }
+        _MovesLeft += GameManager.Instance.GetGoldenBonus();
     }
 
     //Triggers when a button is selected
@@ -112,7 +106,6 @@ public class ButtonManager : Singleton<ButtonManager>
 
             SwapPositionsAndContainers(_FirstClicked, _SecondClicked);
 
-
             _FirstClicked = null;
             _SecondClicked = null;
 
@@ -122,8 +115,6 @@ public class ButtonManager : Singleton<ButtonManager>
             }
 
             CheckMoves();
-
-            //CreateNewButtons();
         }
     }
 
@@ -142,7 +133,6 @@ public class ButtonManager : Singleton<ButtonManager>
     //Swaps the position of the buttons
     private void SwapPositionsAndContainers(Buttons a, Buttons b)
     {
-
         //Store each container here
         Container cA = a._Container;
         Container cB = b._Container;
@@ -156,8 +146,6 @@ public class ButtonManager : Singleton<ButtonManager>
 
         StartCoroutine(MoveToPosition(a, aV));
         StartCoroutine(MoveToPosition(b, bV));
-
-
     }
 
     private float _ItemMoveSpeed = 1500f;
@@ -383,15 +371,7 @@ public class ButtonManager : Singleton<ButtonManager>
         {
             btn.SetSprite(GetRandomSprite());
         }
-        if (GameManager.Instance.SpawnGoldenItem())
-        {
-            //int a = Random.Range(0, _ButtonsRow.Count);
-            //_ButtonsRow[a]._GoldenItem = true;
-            int a = GetNormalItem();
-            _ButtonsRow[a].SetGoldenItem();
-            _ButtonsRow[a]._Image.color = Color.yellow;
-        }
-        if(RewardsManager.Instance.RollForRewards()) //-------------------------------------------------------------------HERE--------------------------------------------------------------------
+        if(RewardsManager.Instance.RollForRewards()) 
         {
             RewardsManager.Instance.SetRewards(_RewardButton1, _RewardButton2, _RewardButton3);
             int a = GetNormalItem();
@@ -400,7 +380,7 @@ public class ButtonManager : Singleton<ButtonManager>
     }
 
     private List<int> normalItemIndices = new List<int>();
-
+    //Returns the number of normal Items
     private int GetNormalItem()
     {
         if (normalItemIndices.Count == 0)
