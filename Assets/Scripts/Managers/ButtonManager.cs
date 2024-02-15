@@ -25,7 +25,6 @@ public class ButtonManager : Singleton<ButtonManager>
     public RewardButton _RewardButton3;
 
     public List<Container> _Containers = new List<Container>();
-
     public List<Buttons> _ButtonsRow = new List<Buttons>();
 
     public Buttons _FirstClicked;
@@ -133,6 +132,7 @@ public class ButtonManager : Singleton<ButtonManager>
     //Swaps the position of the buttons
     private void SwapPositionsAndContainers(Buttons a, Buttons b)
     {
+
         //Store each container here
         Container cA = a._Container;
         Container cB = b._Container;
@@ -146,6 +146,8 @@ public class ButtonManager : Singleton<ButtonManager>
 
         StartCoroutine(MoveToPosition(a, aV));
         StartCoroutine(MoveToPosition(b, bV));
+
+        
     }
 
     private float _ItemMoveSpeed = 1500f;
@@ -184,6 +186,64 @@ public class ButtonManager : Singleton<ButtonManager>
         a.SetInteractable(true);
         a.SetDance(true);
         CheckPositions();
+
+        if (a._ItemType == ItemType.MotionItem)
+        {
+            PurpleItemMove();
+        }
+
+        yield return null;
+    }
+
+    public void PurpleItemMove()
+    {
+        // Move all items up one spot 
+
+        StartCoroutine(MoveAllUP()); //TODO: Fix Logic on this section
+    }
+
+    IEnumerator MoveAllUP()
+    {
+        for (int i = 0; i < _ButtonsRow.Count; i++)
+        {
+            int cont = i - 3;
+            if (cont < 0) cont += _ButtonsRow.Count;
+
+            RectTransform _r = _ButtonsRow[i].GetRectTransform();
+            Vector2 startPosition = _r.anchoredPosition; //a.transform.position;
+            Vector2 targetPosition = _ButtonsRow[cont]._Container.GetRectTransform().anchoredPosition; //target;
+
+            _ButtonsRow[i]._Container = _Containers[cont];
+
+            // Calculate the distance to move
+            float distance = Vector2.Distance(startPosition, targetPosition);
+            _ButtonsRow[i].SetInteractable(false);
+            _ButtonsRow[i].SetDance(false);
+
+            // Move towards the target position while the distance is greater than a small threshold
+            while (distance > 0.1f)
+            {
+                // Calculate the new position based on current position, target position, and speed
+                Vector2 newPosition = Vector2.MoveTowards(_r.anchoredPosition, targetPosition, _ItemMoveSpeed * Time.deltaTime);
+
+                // Update the UI object's position
+                _r.anchoredPosition = newPosition;
+
+                // Update the distance to the target position
+                distance = Vector2.Distance(_r.anchoredPosition, targetPosition);
+
+                // Wait for the next frame
+                yield return null;
+            }
+
+            // Ensure precise positioning at the target position
+            _r.anchoredPosition = targetPosition;
+
+            _ButtonsRow[i].ResetAnchor();
+            _ButtonsRow[i].SetInteractable(true);
+            _ButtonsRow[i].SetDance(true);
+            CheckPositions();
+        }
 
         yield return null;
     }

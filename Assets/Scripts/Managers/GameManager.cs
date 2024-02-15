@@ -18,8 +18,10 @@ public class GameManager : Singleton<GameManager>
     private int _MovesToGive = 5;
 
     //GoldItem
-    [SerializeField] private float _GoldenItemChance = 0.3f;
+    [SerializeField] private float _GoldenItemChance = 0.1f;
     private int _GoldenItemBonus = 10;
+
+    [SerializeField] private float _PurpleItemChance = 0.4f;
     
     private void CheckLevel()
     {
@@ -72,7 +74,6 @@ public class GameManager : Singleton<GameManager>
     }
 
     private int _SpawnDecay = 1;
-
     public bool SpawnGoldenItem()
     {
         Debug.Log("Spawn decay = :" + _SpawnDecay);
@@ -80,6 +81,17 @@ public class GameManager : Singleton<GameManager>
         if (c <= (_GoldenItemChance / _SpawnDecay))
         {
             _SpawnDecay++;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool SpawnPurpleItem()
+    {
+        float c = Random.Range(0f, 1f);
+        if(c <= _PurpleItemChance)
+        {
             return true;
         }
 

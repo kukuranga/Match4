@@ -1200,7 +1200,8 @@ MonoBehaviour:
     sceneName: SampleScene
   _RowsToGive: 1
   _GameOver: 0
-  _GoldenItemChance: 0.3
+  _GoldenItemChance: 0.1
+  _PurpleItemChance: 0.5
 --- !u!4 &1541434362
 Transform:
   m_ObjectHideFlags: 0
@@ -1434,6 +1435,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3d36d869a234e24d81b70b426de0161, type: 2}
   - {fileID: 11400000, guid: 4f3b28abaf886664ba49b0046e247a04, type: 2}
   - {fileID: 11400000, guid: 0b256c72f2a9bf44c9ad60a0df26a532, type: 2}
+  _RewardsChance: 0.3
   _Luck: 0
 --- !u!4 &2093436374
 Transform:

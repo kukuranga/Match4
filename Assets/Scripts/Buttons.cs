@@ -54,27 +54,24 @@ public class Buttons : MonoBehaviour
         CheckItem(); //Checks the item type to give this item
     }
 
-    public RectTransform GetRectTransform()
-    {
-        return _rect;
-    }
 
     //Checks the item type to give this item
     private void CheckItem()
     {
         //Items sorted with presidence, the lower the item the higher the priority
 
-        
+        if (GameManager.Instance.SpawnPurpleItem())
+            SetPurpleItem();
 
         if (GameManager.Instance.SpawnGoldenItem())
-        {
             SetGoldenItem();
-        }
+        
     }
 
     private bool _CheckedAlready = false;
     public void CheckCorrect()
     {
+        
         if(_CorrectPosition == _Container._Index)
         {
             _Container.SetCorrect();
@@ -118,9 +115,12 @@ public class Buttons : MonoBehaviour
             case ItemType.TreasureItem:
                 break;
         }
-            
     }
 
+    public RectTransform GetRectTransform()
+    {
+        return _rect;
+    }
     public void ResetRotation()
     {
         this.transform.rotation = _StartingRotation;
@@ -130,7 +130,6 @@ public class Buttons : MonoBehaviour
     {
         _originalYPosition = _rect.anchoredPosition.y;
         ResetRotation();
-
     }
 
     public Sprite GetSprite()
@@ -150,7 +149,7 @@ public class Buttons : MonoBehaviour
         
     }
 
-    public void SetGoldenItem()
+    private void SetGoldenItem()
     {
         _ItemType = ItemType.GoldenItem;
         _Image.color = Color.yellow;
@@ -164,11 +163,16 @@ public class Buttons : MonoBehaviour
         _GoldenImage.SetActive(true);
     }
 
+    private void SetPurpleItem()
+    {
+        _ItemType = ItemType.MotionItem;
+        _Image.color = Color.blue;
+    }
+
     public void CreateButtons()
     {
         if (_Interactable)
         {
-
             _Pressed = true;
             ButtonManager.Instance.SelectButtons(this);
         }
@@ -178,6 +182,7 @@ public class Buttons : MonoBehaviour
 
     private float spinSpeed = 1440f;
     private bool isRotating = false;
+
     public void SetSelected()
     {
         _OldFreq = _frequency;
