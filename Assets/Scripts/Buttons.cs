@@ -60,8 +60,11 @@ public class Buttons : MonoBehaviour
     {
         //Items sorted with presidence, the lower the item the higher the priority
 
-        if (GameManager.Instance.SpawnPurpleItem())
+        if (GameManager.Instance.SpawnPurpleItem() && !ButtonManager.Instance._AlreadySpawnedPurpleItem)
+        {
+            ButtonManager.Instance._AlreadySpawnedPurpleItem = true;
             SetPurpleItem();
+        }
 
         if (GameManager.Instance.SpawnGoldenItem())
             SetGoldenItem();
@@ -234,5 +237,45 @@ public class Buttons : MonoBehaviour
         float offsetY = _amplitude * Mathf.Sin(Time.time * _frequency);
 
         _rect.anchoredPosition = new Vector2(_rect.anchoredPosition.x, _originalYPosition + offsetY);
+    }
+
+    public void MoveToContainer()
+    {
+        StartCoroutine(MoveToCont());
+    }
+
+    IEnumerator MoveToCont()
+    {
+
+        //RectTransform _r = a.GetRectTransform();
+        Vector2 startPosition = _rect.anchoredPosition; //a.transform.position;
+        Vector2 targetPosition = _Container.GetRectTransform().anchoredPosition; //target;
+
+        // Calculate the distance to move
+        float distance = Vector2.Distance(startPosition, targetPosition);
+        SetInteractable(false);
+        SetDance(false);
+
+        // Move towards the target position while the distance is greater than a small threshold
+        while (distance > 0.1f)
+        {
+            // Calculate the new position based on current position, target position, and speed
+            Vector2 newPosition = Vector2.MoveTowards(_rect.anchoredPosition, targetPosition, 1500f * Time.deltaTime);
+
+            // Update the UI object's position
+            _rect.anchoredPosition = newPosition;
+
+            // Update the distance to the target position
+            distance = Vector2.Distance(_rect.anchoredPosition, targetPosition);
+
+            // Wait for the next frame
+            yield return null;
+        }
+
+        ResetAnchor();
+        SetInteractable(true);
+        SetDance(true);
+
+        yield return null;
     }
 }

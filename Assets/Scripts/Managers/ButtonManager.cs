@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
 
 public class ButtonManager : Singleton<ButtonManager>
@@ -29,6 +27,7 @@ public class ButtonManager : Singleton<ButtonManager>
 
     public Buttons _FirstClicked;
     public Buttons _SecondClicked;
+    public bool _AlreadySpawnedPurpleItem = false;
 
     private bool _IsFirstActiveFrame = true;
     private CharacterController _CharacterController;
@@ -103,8 +102,14 @@ public class ButtonManager : Singleton<ButtonManager>
                 s.SetInteractable(false);
             }
 
-            SwapPositionsAndContainers(_FirstClicked, _SecondClicked);
-
+            if (_FirstClicked._ItemType == ItemType.MotionItem || _SecondClicked._ItemType == ItemType.MotionItem)
+            {
+                PurpleItemMove();
+            }
+            else
+            {
+                SwapPositionsAndContainers(_FirstClicked, _SecondClicked);
+            }
             _FirstClicked = null;
             _SecondClicked = null;
 
@@ -146,7 +151,6 @@ public class ButtonManager : Singleton<ButtonManager>
 
         StartCoroutine(MoveToPosition(a, aV));
         StartCoroutine(MoveToPosition(b, bV));
-
         
     }
 
@@ -187,10 +191,7 @@ public class ButtonManager : Singleton<ButtonManager>
         a.SetDance(true);
         CheckPositions();
 
-        if (a._ItemType == ItemType.MotionItem)
-        {
-            PurpleItemMove();
-        }
+        
 
         yield return null;
     }
@@ -199,53 +200,197 @@ public class ButtonManager : Singleton<ButtonManager>
     {
         // Move all items up one spot 
 
-        StartCoroutine(MoveAllUP()); //TODO: Fix Logic on this section
-    }
-
-    IEnumerator MoveAllUP()
-    {
-        for (int i = 0; i < _ButtonsRow.Count; i++)
+        //TODO: Find put what order the buttons should move
+        OrderButtonList();
+        int one = 0;
+        int two = 0;
+        int _sone = 0;
+        int _stwo = 0;
+        foreach (Buttons btn in _OrderedButtonList)
         {
-            int cont = i - 3;
-            if (cont < 0) cont += _ButtonsRow.Count;
-
-            RectTransform _r = _ButtonsRow[i].GetRectTransform();
-            Vector2 startPosition = _r.anchoredPosition; //a.transform.position;
-            Vector2 targetPosition = _ButtonsRow[cont]._Container.GetRectTransform().anchoredPosition; //target;
-
-            _ButtonsRow[i]._Container = _Containers[cont];
-
-            // Calculate the distance to move
-            float distance = Vector2.Distance(startPosition, targetPosition);
-            _ButtonsRow[i].SetInteractable(false);
-            _ButtonsRow[i].SetDance(false);
-
-            // Move towards the target position while the distance is greater than a small threshold
-            while (distance > 0.1f)
+            if (btn == _FirstClicked)
             {
-                // Calculate the new position based on current position, target position, and speed
-                Vector2 newPosition = Vector2.MoveTowards(_r.anchoredPosition, targetPosition, _ItemMoveSpeed * Time.deltaTime);
+                _sone++;
 
-                // Update the UI object's position
-                _r.anchoredPosition = newPosition;
-
-                // Update the distance to the target position
-                distance = Vector2.Distance(_r.anchoredPosition, targetPosition);
-
-                // Wait for the next frame
-                yield return null;
+                break;
             }
-
-            // Ensure precise positioning at the target position
-            _r.anchoredPosition = targetPosition;
-
-            _ButtonsRow[i].ResetAnchor();
-            _ButtonsRow[i].SetInteractable(true);
-            _ButtonsRow[i].SetDance(true);
-            CheckPositions();
+            _sone++;
+        }
+        foreach (Buttons btn in _OrderedButtonList)
+        {
+            if (btn == _SecondClicked)
+            {
+                _stwo++;
+                break;
+            }
+            _stwo++;
         }
 
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            if(_OrderedButtonList[i] == _FirstClicked)
+            {
+                if (i < 3)
+                    one = 1;
+                else if (i < 6)
+                    one = 2;
+                else
+                    one = 3;
+                break;
+            }
+        }
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            if (_OrderedButtonList[i] == _SecondClicked)
+            {
+                if (i < 3)
+                    two = 1;
+                else if (i < 6)
+                    two = 2;
+                else
+                    two = 3;
+                break;
+            }
+        }
+
+        int difference = (one - two);
+        int sdiff = (_sone - _stwo);
+
+        if(difference >= 1)
+        {
+            StartCoroutine(MoveAllUp());
+        }
+        else if (difference <= -1)
+        {
+            StartCoroutine(MoveAllDown());
+        }
+        else if (sdiff >= 1)
+        {
+            StartCoroutine(MoveAllLeft());
+        }
+        else if(sdiff <= -1)
+        {
+            StartCoroutine(MoveAllRight());
+        }
+    }
+
+    IEnumerator MoveAllDown()
+    {
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            int p = i + 3;
+
+            int val = _OrderedButtonList.Count;
+            if (p >= val )
+            {
+                p -= val;
+            }
+
+            _OrderedButtonList[i]._Container = _Containers[p];
+        }
+
+        foreach (Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+
+        CheckPositions();
+
         yield return null;
+    }
+
+    IEnumerator MoveAllRight()
+    {
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            int p = i + 1;
+
+            int val = _OrderedButtonList.Count;
+            if(p == val || p == val - 3 || p == val - 6)
+            {
+                p -= 3;
+            }
+            _OrderedButtonList[i]._Container = _Containers[p];
+        }
+
+        foreach(Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+        CheckPositions();
+
+        yield return null;
+    }
+
+    IEnumerator MoveAllUp()
+    {
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            int p = i - 3;
+
+            int val = _OrderedButtonList.Count;
+            if (p < 0)
+            {
+                p += val;
+            }
+
+            _OrderedButtonList[i]._Container = _Containers[p];
+        }
+
+        foreach (Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+
+        CheckPositions();
+
+        yield return null;
+    }
+
+    IEnumerator MoveAllLeft()
+    {
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            int p = i - 1;
+
+            int val = _OrderedButtonList.Count;
+            if (p < 0 || p == 2 || p == 5)
+            {
+                p += 3;
+            }
+            _OrderedButtonList[i]._Container = _Containers[p];
+        }
+
+        foreach (Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+        CheckPositions();
+
+        yield return null;
+    }
+
+    private List<Buttons> _OrderedButtonList = new List<Buttons>();
+    private void OrderButtonList()
+    {
+        _OrderedButtonList.Clear();
+
+        foreach(Container _c in _Containers)
+        {
+            foreach (Buttons _b in _ButtonsRow)
+            {
+                if (_b._Container == _c)
+                {
+                    _OrderedButtonList.Add(_b);
+                    break;
+                }
+            }
+        }
+
     }
 
     //----- Collection of getters and setters for various components tracked by this script ----------------------------
