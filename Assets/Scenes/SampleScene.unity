@@ -1896,7 +1896,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
-  m_DragThreshold: 10
+  m_DragThreshold: 1
 --- !u!4 &402548404
 Transform:
   m_ObjectHideFlags: 0
@@ -2207,7 +2207,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9.785075
+  orthographic size: 9.760564
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2231,7 +2231,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.995163, y: -5.094757, z: -9.999999}
+  m_LocalPosition: {x: -28.495163, y: -51.094757, z: -9.999999}
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9072,6 +9072,8 @@ MonoBehaviour:
   _ButtonsRow: []
   _FirstClicked: {fileID: 0}
   _SecondClicked: {fileID: 0}
+  _AlreadySpawnedPurpleItem: 0
+  _IsSwiping: 0
   ContainerPrefab: {fileID: 131974259567541895, guid: 75a15a2fd6a09784c841747064ff9b26, type: 3}
   buttonPrefab: {fileID: 2447022953924229116, guid: 43c6845c4e2775b459c80a2d6bb50cc8, type: 3}
   ContainerGO: {fileID: 2067953914}

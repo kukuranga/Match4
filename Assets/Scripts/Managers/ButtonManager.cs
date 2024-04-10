@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
-public class ButtonManager : Singleton<ButtonManager>
+public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     private int _BtnIndex = -1;
     private int _ContIndex = -1;
@@ -31,6 +32,10 @@ public class ButtonManager : Singleton<ButtonManager>
 
     private bool _IsFirstActiveFrame = true;
     private CharacterController _CharacterController;
+    private float _ItemMoveSpeed = 1500f;
+    private List<Buttons> _OrderedButtonList = new List<Buttons>();
+
+
 
     private void Awake()
     {
@@ -69,33 +74,45 @@ public class ButtonManager : Singleton<ButtonManager>
         _MovesLeft += GameManager.Instance.GetGoldenBonus();
     }
 
-    //Triggers when a button is selected
-    public void SelectButtons(Buttons btn)
+    //TODO: Change logic to only work either one way up down left oo right ----------------------------------------------------------------
+
+
+    public void SelectButtons(Buttons btn , int Direction) //called on buttons drag
     {
+        _FirstClicked = btn;
+        bool _CanMove = false;
 
-        if(_FirstClicked == null)
+        //todo:
+        //1 order the butons
+        int index = GetButtonInOrderedList(btn);
+        //2 if the number is out of bounds unselect both numbers and reset
+        //3 set _secondclicked to the correct side of the button
+
+        // 1:Up 2:Down 3:Right 4:Left
+        switch(Direction)
         {
-            _FirstClicked = btn;
-            btn.Zoom(1.2f);
-            btn.SetSelected();
-            _CharacterController.SetAttack(true);
-            VFXManager.Instance.StartPotionShake();
+            case 1:
+                _CanMove = CheckUp(index);
+                break;
+            case 2:
+                _CanMove = CheckDown(index);
+                break;
+            case 3:
+                _CanMove = CheckRight(index);
+                break;
+            case 4:
+                _CanMove = CheckLeft(index);
+                break;
         }
-        else if(_SecondClicked == null)
-        {
 
-            _SecondClicked = btn;
-            _CharacterController.SetAttack(false);
+        if (_CanMove)
+        {
+            //st first & second click than move them
+            _FirstClicked = btn;
+            _FirstClicked.SetUnSelected();
             VFXManager.Instance.StopAllShaking();
             _FirstClicked.Zoom(1f);
-            _FirstClicked.SetUnSelected();
 
-            if (_FirstClicked == _SecondClicked)
-            {
-                _FirstClicked = null;
-                _SecondClicked = null;
-                return;
-            }
 
             foreach (Buttons s in _ButtonsRow)
             {
@@ -120,7 +137,106 @@ public class ButtonManager : Singleton<ButtonManager>
 
             CheckMoves();
         }
+
     }
+
+    #region Check if the drag location is possible
+    private bool CheckUp(int indx)
+    {
+        int val = indx - 3;
+        if(val < 0)
+        {
+            return false;
+        }
+        _SecondClicked = _OrderedButtonList[val];
+        return true;
+
+    }
+    private bool CheckDown(int indx)
+    {
+        int val = indx + 3;
+        if (val > (GameManager.Instance._RowsToGive * 3) - 1)
+        {
+            return false;
+        }
+        _SecondClicked = _OrderedButtonList[val];
+        return true;
+    }
+    private bool CheckLeft(int indx)
+    {
+        int val = indx - 1;
+        if (val < 0 || val == 2 || val == 5 || val == 8)
+        {
+            return false;
+        }
+        _SecondClicked = _OrderedButtonList[val];
+        return true;
+    }
+    private bool CheckRight(int indx)
+    {
+        int val = indx + 1;
+        if (val > (GameManager.Instance._RowsToGive * 3) - 1 || val == 3 || val == 6)
+        {
+            return false;
+        }
+        _SecondClicked = _OrderedButtonList[val];
+        return true;
+    }
+    #endregion
+
+    #region Ability to select any two items logic
+    //public void SelectButtons(Buttons btn)
+    //{
+
+    //    if(_FirstClicked == null)
+    //    {
+    //        _FirstClicked = btn;
+    //        btn.Zoom(1.2f);
+    //        btn.SetSelected();
+    //        _CharacterController.SetAttack(true);
+    //        VFXManager.Instance.StartPotionShake();
+    //    }
+    //    else if(_SecondClicked == null)
+    //    {
+
+    //        _SecondClicked = btn;
+    //        _CharacterController.SetAttack(false);
+    //        VFXManager.Instance.StopAllShaking();
+    //        _FirstClicked.Zoom(1f);
+    //        _FirstClicked.SetUnSelected();
+
+    //        if (_FirstClicked == _SecondClicked)
+    //        {
+    //            _FirstClicked = null;
+    //            _SecondClicked = null;
+    //            return;
+    //        }
+
+    //        foreach (Buttons s in _ButtonsRow)
+    //        {
+    //            s.SetInteractable(false);
+    //        }
+
+    //        if (_FirstClicked._ItemType == ItemType.MotionItem || _SecondClicked._ItemType == ItemType.MotionItem)
+    //        {
+    //            PurpleItemMove();
+    //        }
+    //        else
+    //        {
+    //            SwapPositionsAndContainers(_FirstClicked, _SecondClicked);
+    //        }
+    //        _FirstClicked = null;
+    //        _SecondClicked = null;
+
+    //        foreach (Buttons s in _ButtonsRow)
+    //        {
+    //            s.SetInteractable(true);
+    //        }
+
+    //        CheckMoves();
+    //    }
+    //}
+    #endregion
 
     //Checks the number of moves left the player has
     private void CheckMoves()
@@ -153,8 +269,6 @@ public class ButtonManager : Singleton<ButtonManager>
         StartCoroutine(MoveToPosition(b, bV));
         
     }
-
-    private float _ItemMoveSpeed = 1500f;
 
     IEnumerator MoveToPosition(Buttons a , Vector2 target)
     {
@@ -198,9 +312,6 @@ public class ButtonManager : Singleton<ButtonManager>
 
     public void PurpleItemMove()
     {
-        // Move all items up one spot 
-
-        //TODO: Find put what order the buttons should move
         OrderButtonList();
         int one = 0;
         int two = 0;
@@ -255,6 +366,12 @@ public class ButtonManager : Singleton<ButtonManager>
 
         int difference = (one - two);
         int sdiff = (_sone - _stwo);
+
+        if(_SecondClicked._ItemType == ItemType.MotionItem)
+        {
+            difference = -difference;
+            sdiff = -sdiff;
+        }
 
         if(difference >= 1)
         {
@@ -374,7 +491,6 @@ public class ButtonManager : Singleton<ButtonManager>
         yield return null;
     }
 
-    private List<Buttons> _OrderedButtonList = new List<Buttons>();
     private void OrderButtonList()
     {
         _OrderedButtonList.Clear();
@@ -390,6 +506,25 @@ public class ButtonManager : Singleton<ButtonManager>
                 }
             }
         }
+    }
+
+    private int GetButtonInOrderedList(Buttons btn)
+    {
+        OrderButtonList();
+
+        //Return the buttons position in the order button list
+
+        int i = 0;
+        foreach(Buttons b in _OrderedButtonList)
+        {
+            if(btn == b)
+            {
+                return i;
+            }
+            i++;
+        }
+
+        return 0;
 
     }
 

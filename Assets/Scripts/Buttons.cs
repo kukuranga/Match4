@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public enum ItemType
@@ -12,7 +13,7 @@ public enum ItemType
     MotionItem,
 }
 
-public class Buttons : MonoBehaviour
+public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     //flag if the item is the Golden Button 
     //public bool _GoldenItem = false; //Change code to enum for ItemType
@@ -30,6 +31,8 @@ public class Buttons : MonoBehaviour
     private RectTransform _rect;
     private Quaternion _StartingRotation;
     private bool AlreadyChecked = false;
+
+    public bool _IsSwiping = false; 
 
     //Dance
     private float _originalYPosition;
@@ -172,12 +175,67 @@ public class Buttons : MonoBehaviour
         _Image.color = Color.blue;
     }
 
+    // OnClick
     public void CreateButtons()
+    {
+        //Commented out to use the pointer click below
+        //if (_Interactable)
+        //{
+        //    _Pressed = true;
+        //    ButtonManager.Instance.SelectButtons(this);
+        //}        
+    }
+    private Vector2 startTouchPosition;
+    //private bool isSwiping = false;
+
+    public void OnPointerDown(PointerEventData eventData)
     {
         if (_Interactable)
         {
-            _Pressed = true;
-            ButtonManager.Instance.SelectButtons(this);
+            startTouchPosition = eventData.position;
+            _IsSwiping = true;
+            Zoom(1.2f);
+            SetSelected();
+            VFXManager.Instance.StartPotionShake();
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        _IsSwiping = false;
+        Zoom(1);
+        SetUnSelected();
+        VFXManager.Instance.StopAllShaking();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (_IsSwiping)
+        {
+            Vector2 currentTouchPosition = eventData.position;
+            Vector2 swipeDirection = currentTouchPosition - startTouchPosition;
+
+            float absX = Mathf.Abs(swipeDirection.x);
+            float absY = Mathf.Abs(swipeDirection.y);
+
+            if (absX > absY)
+            {
+                if (swipeDirection.x > 0)
+                    ButtonManager.Instance.SelectButtons(this, 3);
+
+                else
+                    ButtonManager.Instance.SelectButtons(this, 4);
+            }
+            else
+            {
+                if (swipeDirection.y > 0)
+                    ButtonManager.Instance.SelectButtons(this, 1);
+
+                else
+                    ButtonManager.Instance.SelectButtons(this, 2);
+            }
+
+            _IsSwiping = false;
         }
     }
 
