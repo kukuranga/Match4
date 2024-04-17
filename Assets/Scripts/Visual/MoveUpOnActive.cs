@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class MoveUpOnActive : MonoBehaviour
 {
-
+    [SerializeField] bool _Loadingscreen = false;
+    [SerializeField] bool _Loop = false;
     private Vector2 _StartingPos;
     private RectTransform _RT;
     public RectTransform _OutsidePosition;
     public float _Speed;
+    
 
 
     private void Awake()
@@ -19,6 +21,12 @@ public class MoveUpOnActive : MonoBehaviour
 
     private void Start()
     {
+        if(_Loadingscreen)
+        {
+            _RT.anchoredPosition = _OutsidePosition.anchoredPosition;
+            _Loadingscreen = false;
+        }
+        else
         SceneLoader.Instance.onSceneLoadedEvent.AddListener(MoveDown);
     }
     private void FixedUpdate()
@@ -35,6 +43,13 @@ public class MoveUpOnActive : MonoBehaviour
     {
         float step = _Speed * Time.deltaTime;
         _RT.anchoredPosition = Vector2.Lerp(_RT.anchoredPosition, _StartingPos, step);
+        if(_Loop)
+        {
+            if(Vector2.Distance(_RT.anchoredPosition, _StartingPos) < 400)
+            {
+                _RT.anchoredPosition = _OutsidePosition.anchoredPosition;
+            }
+        }
     }
 
 
