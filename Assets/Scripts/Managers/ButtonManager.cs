@@ -575,7 +575,7 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
             _GameWonScreen.SetActive(true);
 
             GameManager.Instance.StoreMoves(_MovesLeft);
-            _CharacterController.SetAttack(true);
+            //_CharacterController.SetAttack(true);
             VFXManager.Instance.StartPotionShake();
             _Containers[0].SetWave(true);
             GameManager.Instance.GameWon();
