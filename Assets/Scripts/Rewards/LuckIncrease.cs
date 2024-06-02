@@ -9,8 +9,13 @@ public class LuckIncrease : Reward
 
     public override void Activate()
     {
-        RewardsManager.Instance.IncreaseLuck(_IncreaseLuck);
-        RewardsManager.Instance.ActivateReward(this);
-        Debug.Log("Luck Increased By: " + _IncreaseLuck);
+        if (PayCost())
+        {
+            RewardsManager.Instance.IncreaseLuck(_IncreaseLuck);
+            RewardsManager.Instance.ActivateReward(this);
+            Debug.Log("Luck Increased By: " + _IncreaseLuck);
+        }
+        else
+            _Payable = false;
     }
 }

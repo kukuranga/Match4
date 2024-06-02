@@ -10,18 +10,22 @@ public class RewardButton : MonoBehaviour
     public Reward _Reward;
     public TextMeshProUGUI _Text;
     public Image _Image;
+    public TextMeshProUGUI _Cost;
+    private bool _CanBePicked = true;
+
+    private void OnEnable()
+    {
+        _Cost.text = _Reward._Cost.ToString();
+    }
 
     public void Onclick()
     {
-        _Reward.Activate();
-        //Move on with the scene
-
-        ButtonManager.Instance._GameRewardsScreen.SetActive(false);
-
-        //if (GameManager.Instance._GameOver)
-        //    GameManager.Instance.ResetGame();
-        //SceneLoader.Instance.UnloadScene(GameManager.Instance._LevelToLoad);
-        //SceneLoader.Instance.LoadScene(GameManager.Instance._LevelToLoad);
+        if (_CanBePicked)
+        {
+            _Reward.Activate();
+            _CanBePicked = false;
+            //todo: change the logic to gray out or remove the item
+        }
     }
 
 }

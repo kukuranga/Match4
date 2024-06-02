@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Fraktalia.DreamStarGen.Algorithms;
+//using Fraktalia.DreamStarGen.Algorithms;
 
-namespace Fraktalia.DreamStarGen
-{
-    [RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshFilter))]
     public class DreamStarGenerator_Mixer : DreamStarGenerator
     {
 
@@ -48,4 +46,3 @@ namespace Fraktalia.DreamStarGen
         }
 
     }
-}

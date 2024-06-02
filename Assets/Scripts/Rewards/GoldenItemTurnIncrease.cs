@@ -9,8 +9,13 @@ public class GoldenItemTurnIncrease : Reward
 
     public override void Activate()
     {
-        GameManager.Instance.IncreaseGoldItemBonus(_IncreaseTurns);
-        RewardsManager.Instance.ActivateReward(this);
-        Debug.Log("Gold Item turns Increased By: " + _IncreaseTurns);
+        if (PayCost())
+        {
+            GameManager.Instance.IncreaseGoldItemBonus(_IncreaseTurns);
+            RewardsManager.Instance.ActivateReward(this);
+            Debug.Log("Gold Item turns Increased By: " + _IncreaseTurns);
+        }
+        else
+            _Payable = false;
     }
 }

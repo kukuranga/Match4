@@ -6,6 +6,8 @@ public class GameManager : Singleton<GameManager>
 {
     //Todo: add logic to persist the number of moves available and add the moves on each level up
 
+    public bool _Debugger;
+    public float _SwipeSensitivity;
     public int _Level = 1;
     public SceneReference _Homepage;
     public SceneReference _GameOverScene;
@@ -22,7 +24,17 @@ public class GameManager : Singleton<GameManager>
     private int _GoldenItemBonus = 10;
 
     [SerializeField] private float _PurpleItemChance = 0.4f;
-    
+    [SerializeField] private float _RedItemChance = 0f;
+
+    private void Update()
+    {
+        if(_Debugger)
+        {
+            _RowsToGive = 3;
+            _MovesToGive = 9999;
+        }
+    }
+
     private void CheckLevel()
     {
         Debug.Log("Level checkd");
@@ -63,6 +75,16 @@ public class GameManager : Singleton<GameManager>
         _GoldenItemChance += _Increase;
     }
 
+    public void IncreasePurpleItemChance(float _Increase)
+    {
+        _PurpleItemChance += _Increase;
+    }
+
+    public void IncreaseRedItemChance(float _Increase)
+    {
+        _RedItemChance += _Increase;
+    }
+
     public void IncreaseGoldItemBonus(int _value)
     {
         _GoldenItemBonus += _value;
@@ -98,6 +120,16 @@ public class GameManager : Singleton<GameManager>
         return false;
     }
 
+    public bool SpawnRedItem()
+    {
+        float c = Random.Range(0f, 1f);
+        if(c <= _RedItemChance)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public int GetMovesToGive()
     {
         return _MovesToGive;
@@ -122,9 +154,12 @@ public class GameManager : Singleton<GameManager>
             _GameOver = true;
         }
     }
+
     public void GameWon()
     {
         SetMoves();
+        IncreasePurpleItemChance(0.01f);
+        IncreaseRedItemChance(0.006f);
         _SpawnDecay = 1;
         _Level++;
         CheckLevel();

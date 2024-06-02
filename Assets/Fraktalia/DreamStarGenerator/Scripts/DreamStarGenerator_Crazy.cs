@@ -2,13 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Fraktalia.DreamStarGen
-{
-    public class DreamStarGenerator_Crazy : DreamStarGenerator
+  public class DreamStarGenerator_Crazy : DreamStarGenerator
     {
-
-
-
         public override Vector3 StarAlgorithm(float Angle)
         {
             float r = 0;
@@ -27,4 +22,3 @@ namespace Fraktalia.DreamStarGen
             return new Vector3(x, y, 0);
         }
     }
-}

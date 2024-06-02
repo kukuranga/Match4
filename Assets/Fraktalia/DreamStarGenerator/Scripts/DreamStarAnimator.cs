@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Fraktalia.DreamStarGen
-{
+
     public class DreamStarAnimator : MonoBehaviour
     {
 
@@ -53,4 +52,3 @@ namespace Fraktalia.DreamStarGen
             Generator._GenerateStar();
         }
     }
-}

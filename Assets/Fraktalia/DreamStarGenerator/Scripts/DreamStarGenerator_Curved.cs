@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Fraktalia.DreamStarGen
-{
+
     public class DreamStarGenerator_Curved : DreamStarGenerator
     {
 
@@ -32,4 +31,3 @@ namespace Fraktalia.DreamStarGen
             return new Vector3(x, y, 0) * powcurvevalue;
         }
     }
-}

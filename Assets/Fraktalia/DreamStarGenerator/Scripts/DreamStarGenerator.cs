@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Fraktalia.DreamStarGen
-{
+
     [RequireComponent(typeof(MeshFilter))]
     public class DreamStarGenerator : MonoBehaviour
     {
@@ -128,4 +127,3 @@ namespace Fraktalia.DreamStarGen
 #endif
         }
     }
-}

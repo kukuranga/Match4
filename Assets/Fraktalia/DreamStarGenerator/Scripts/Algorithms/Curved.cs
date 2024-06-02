@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Fraktalia.DreamStarGen.Algorithms
-{
+
     public class Curved : BasicAlgorithm
     {
      
@@ -36,4 +35,3 @@ namespace Fraktalia.DreamStarGen.Algorithms
 
 
     }
-}

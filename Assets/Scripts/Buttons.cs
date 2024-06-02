@@ -11,6 +11,7 @@ public enum ItemType
     GoldenItem,
     TreasureItem,
     MotionItem,
+    RedItem,
 }
 
 public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, IDragHandler
@@ -18,6 +19,9 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
     //flag if the item is the Golden Button 
     //public bool _GoldenItem = false; //Change code to enum for ItemType
     public ItemType _ItemType = ItemType.NormalItem;
+    public Sprite _PurpleItemSprite;
+    public Sprite _GoldenItemSprite;
+    public Sprite _RedItemSprite;
 
     public int _Index = 0;
     public int _CorrectPosition = 0;
@@ -45,6 +49,12 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
     {
         if(_Dance)
             Dance();
+
+        if (ButtonManager.Instance._MovingItems > 0)
+            SetInteractable(false);
+        else
+            SetInteractable(true);
+        
     }
 
     private void Awake()
@@ -68,9 +78,10 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
             ButtonManager.Instance._AlreadySpawnedPurpleItem = true;
             SetPurpleItem();
         }
-
-        if (GameManager.Instance.SpawnGoldenItem())
+        else if (GameManager.Instance.SpawnGoldenItem())
             SetGoldenItem();
+        else if (GameManager.Instance.SpawnRedItem())
+            SetRedItem();
         
     }
 
@@ -95,6 +106,13 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
                     case ItemType.TreasureItem:
                         ButtonManager.Instance._GameRewardsScreen.SetActive(true);
                         break;
+                    case ItemType.MotionItem:
+                        //_Image.sprite = _PurpleItemSprite;
+                        break;
+                    case ItemType.RedItem:
+                        //TODO Set the red item visuals here
+                        //_Image.sprite = _RedItemSprite;
+                        break;
                 }
                 AlreadyChecked = true;
             }
@@ -117,9 +135,18 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
         {
             case ItemType.GoldenItem:
                 _GoldenImage.SetActive(true);
+                _Image.color = Color.yellow;
+                _Image.sprite = _GoldenItemSprite;
                 break;
             case ItemType.TreasureItem:
                 break;
+            case ItemType.MotionItem:
+                _Image.sprite = _PurpleItemSprite;
+                break;
+            case ItemType.RedItem:
+                _Image.sprite = _RedItemSprite;
+                    break;
+            
         }
     }
 
@@ -158,21 +185,27 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
     private void SetGoldenItem()
     {
         _ItemType = ItemType.GoldenItem;
-        _Image.color = Color.yellow;
     }
 
     public void SetTreasureItem()
     {
         _ItemType = ItemType.TreasureItem;
         SetSprite(RewardsManager.Instance._TreasureSprite);
-        _Image.color = Color.blue;
-        _GoldenImage.SetActive(true);
+        //_Image.color = Color.blue;
+        //_GoldenImage.SetActive(true);
     }
 
     private void SetPurpleItem()
     {
         _ItemType = ItemType.MotionItem;
-        _Image.color = Color.blue;
+        _Image.sprite = _PurpleItemSprite;
+        //_Image.color = Color.blue;
+    }
+
+    private void SetRedItem()
+    {
+        _ItemType = ItemType.RedItem;
+        _Image.sprite = _RedItemSprite;
     }
 
     // OnClick
@@ -217,22 +250,27 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
 
             float absX = Mathf.Abs(swipeDirection.x);
             float absY = Mathf.Abs(swipeDirection.y);
+            Debug.Log(absX + " : " + absY);
+            float _SwipeSensitivity = GameManager.Instance._SwipeSensitivity;
 
-            if (absX > absY)
+            if ((swipeDirection.x > _SwipeSensitivity || swipeDirection.y > _SwipeSensitivity) ||(swipeDirection.x < -_SwipeSensitivity || swipeDirection.y < -_SwipeSensitivity))
             {
-                if (swipeDirection.x > 0)
-                    ButtonManager.Instance.SelectButtons(this, 3);
+                if (absX > absY)
+                {
+                    if (swipeDirection.x > 0)
+                        ButtonManager.Instance.SelectButtons(this, 3);
 
+                    else
+                        ButtonManager.Instance.SelectButtons(this, 4);
+                }
                 else
-                    ButtonManager.Instance.SelectButtons(this, 4);
-            }
-            else
-            {
-                if (swipeDirection.y > 0)
-                    ButtonManager.Instance.SelectButtons(this, 1);
+                {
+                    if (swipeDirection.y > 0)
+                        ButtonManager.Instance.SelectButtons(this, 1);
 
-                else
-                    ButtonManager.Instance.SelectButtons(this, 2);
+                    else
+                        ButtonManager.Instance.SelectButtons(this, 2);
+                }
             }
 
             _IsSwiping = false;
@@ -304,8 +342,7 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
 
     IEnumerator MoveToCont()
     {
-
-        //RectTransform _r = a.GetRectTransform();
+        ButtonManager.Instance._MovingItems++;
         Vector2 startPosition = _rect.anchoredPosition; //a.transform.position;
         Vector2 targetPosition = _Container.GetRectTransform().anchoredPosition; //target;
 
@@ -318,7 +355,7 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
         while (distance > 0.1f)
         {
             // Calculate the new position based on current position, target position, and speed
-            Vector2 newPosition = Vector2.MoveTowards(_rect.anchoredPosition, targetPosition, 1500f * Time.deltaTime);
+            Vector2 newPosition = Vector2.MoveTowards(_rect.anchoredPosition, targetPosition, ButtonManager.Instance._ItemMoveSpeed * Time.deltaTime);
 
             // Update the UI object's position
             _rect.anchoredPosition = newPosition;
@@ -333,6 +370,7 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
         ResetAnchor();
         SetInteractable(true);
         SetDance(true);
+        ButtonManager.Instance._MovingItems--;
 
         yield return null;
     }

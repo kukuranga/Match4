@@ -11,8 +11,13 @@ public class GoldItemReward : Reward
 
     public override void Activate()
     {
-        GameManager.Instance.AddToGoldSpawnChance(_IncreaseToGoldItemSpawnRate);
-        RewardsManager.Instance.ActivateReward(this);
-        Debug.Log("Gold Item Spawn Rate Increased By: " + _IncreaseToGoldItemSpawnRate);
+        if (PayCost())
+        {
+            GameManager.Instance.AddToGoldSpawnChance(_IncreaseToGoldItemSpawnRate);
+            RewardsManager.Instance.ActivateReward(this);
+            Debug.Log("Gold Item Spawn Rate Increased By: " + _IncreaseToGoldItemSpawnRate);
+        }
+        else
+            _Payable = false;
     }
 }

@@ -16,10 +16,26 @@ public class Reward : ScriptableObject
     public Sprite _Image;
     public string _Description; 
     public Rarity _Rarity;
+    public int _Cost;
+    public bool _Payable = true;
 
     public virtual void Activate()
     {
         Debug.Log(this + ": Activate Method has not been overriden");
+    }
+
+    public bool PayCost()
+    {
+        int m = ButtonManager.Instance._MovesLeft;
+
+        if (m > _Cost)
+        {
+            ButtonManager.Instance.PayCost(_Cost);
+            _Payable = true;
+            return true;
+        }
+
+        return false;
     }
 
 }

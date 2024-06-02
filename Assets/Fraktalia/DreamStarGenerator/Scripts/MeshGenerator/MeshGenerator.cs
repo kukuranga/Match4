@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Fraktalia.DreamStarGen
-{
 
     public class MeshGenerators
     {
@@ -265,4 +263,3 @@ namespace Fraktalia.DreamStarGen
 
 
     }
-}

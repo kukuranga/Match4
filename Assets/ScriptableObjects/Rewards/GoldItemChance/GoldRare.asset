@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e64df45d1c35684d881d59dc9fbf271, type: 3}
   m_Name: GoldRare
   m_EditorClassIdentifier: 
-  _Image: {fileID: 21300000, guid: 394899dbf2938874ca7d1025f7598406, type: 3}
+  _Image: {fileID: 21300000, guid: 39d66829824cb1d4da958035ee18213a, type: 3}
   _Description: More Gold Items (r)
   _Rarity: 2
+  _Cost: 3
+  _Payable: 1
   _IncreaseToGoldItemSpawnRate: 0.15

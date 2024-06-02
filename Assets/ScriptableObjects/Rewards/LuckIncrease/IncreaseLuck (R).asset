@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2450e901715724cb12efce4bd1c3f9, type: 3}
   m_Name: IncreaseLuck (R)
   m_EditorClassIdentifier: 
-  _Image: {fileID: 21300000, guid: 79bc4f6dd92caeb4a827f02c7942b1fc, type: 3}
+  _Image: {fileID: 21300000, guid: 772edc39cb184504d8e2b6dac5d8576d, type: 3}
   _Description: Luck^^^
   _Rarity: 2
+  _Cost: 1
+  _Payable: 1
   _IncreaseLuck: 2

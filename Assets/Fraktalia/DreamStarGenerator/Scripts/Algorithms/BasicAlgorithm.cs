@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Fraktalia.DreamStarGen.Algorithms
-{
+
     public class BasicAlgorithm : MonoBehaviour
     {
         public float Impact = 1;
@@ -25,4 +24,3 @@ namespace Fraktalia.DreamStarGen.Algorithms
 
 
     }
-}

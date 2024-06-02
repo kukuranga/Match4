@@ -7,8 +7,7 @@ using System.Text;
 using UnityEditor;
 #endif
 
-namespace Fraktalia.DreamStarGen
-{
+
     public class MeshExporter : MonoBehaviour
     {
 
@@ -131,4 +130,3 @@ namespace Fraktalia.DreamStarGen
 
     }
 #endif
-}

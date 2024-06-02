@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Fraktalia.DreamStarGen.Algorithms
-{
+
     public class Circle : BasicAlgorithm
     {
        
@@ -26,4 +25,3 @@ namespace Fraktalia.DreamStarGen.Algorithms
 
 
     }
-}

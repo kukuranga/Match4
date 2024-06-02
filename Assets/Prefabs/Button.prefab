@@ -454,6 +454,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ItemType: 0
+  _PurpleItemSprite: {fileID: 21300000, guid: f9bb6b30fc0e60f4ca660c11bbb894ac, type: 3}
+  _GoldenItemSprite: {fileID: 21300000, guid: d8995e4327c45a34fbb4f3f7e9974775, type: 3}
+  _RedItemSprite: {fileID: 21300000, guid: 61bf649dc8d318b4ca6c0c351b6222c3, type: 3}
   _Index: 0
   _CorrectPosition: 0
   _Pressed: 0
@@ -462,5 +465,6 @@ MonoBehaviour:
   _Container: {fileID: 0}
   _Image: {fileID: 0}
   _GoldenImage: {fileID: 1081692474711871837}
+  _IsSwiping: 0
   _amplitude: 20
   _frequency: 7

@@ -9,7 +9,7 @@ public class CharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ButtonManager.Instance.SetCharacterController(this);
+        //ButtonManager.Instance.SetCharacterController(this);
         _anim = GetComponent<Animator>();
     }
 

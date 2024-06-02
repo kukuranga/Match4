@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Fraktalia.DreamStarGen.Algorithms
-{
+
     public class Pull : BasicAlgorithm
     {
         public Transform Target;
@@ -50,4 +49,3 @@ namespace Fraktalia.DreamStarGen.Algorithms
 
 
     }
-}
