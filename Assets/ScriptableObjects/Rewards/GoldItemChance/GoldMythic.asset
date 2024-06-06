@@ -15,6 +15,6 @@ MonoBehaviour:
   _Image: {fileID: 21300000, guid: 39d66829824cb1d4da958035ee18213a, type: 3}
   _Description: More Gold Items (m)
   _Rarity: 3
-  _Cost: 4
+  _Cost: 15
   _Payable: 1
   _IncreaseToGoldItemSpawnRate: 0.2

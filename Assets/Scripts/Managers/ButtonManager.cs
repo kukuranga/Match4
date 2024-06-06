@@ -28,7 +28,7 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
 
     public Buttons _FirstClicked;
     public Buttons _SecondClicked;
-    public bool _AlreadySpawnedPurpleItem = false;
+    //public bool _AlreadySpawnedPurpleItem = false;
 
     private bool _IsFirstActiveFrame = true;
     public float _ItemMoveSpeed = 2300f;

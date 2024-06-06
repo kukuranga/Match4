@@ -15,6 +15,6 @@ MonoBehaviour:
   _Image: {fileID: 21300000, guid: 772edc39cb184504d8e2b6dac5d8576d, type: 3}
   _Description: Luck ^^
   _Rarity: 0
-  _Cost: 0
+  _Cost: 3
   _Payable: 1
   _IncreaseLuck: 1

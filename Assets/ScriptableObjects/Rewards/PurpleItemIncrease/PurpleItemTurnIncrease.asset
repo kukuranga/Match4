@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e64df45d1c35684d881d59dc9fbf271, type: 3}
-  m_Name: GoldCommon 1
+  m_Script: {fileID: 11500000, guid: 384372aee22e91c4e8427aaa73bcf397, type: 3}
+  m_Name: PurpleItemTurnIncrease
   m_EditorClassIdentifier: 
-  _Image: {fileID: 21300000, guid: 39d66829824cb1d4da958035ee18213a, type: 3}
-  _Description: More Gold Items (c)
+  _Image: {fileID: 21300000, guid: efb124023345fe147824adf564a828c9, type: 3}
+  _Description: Increase the purple item spawn rate
   _Rarity: 0
-  _Cost: 5
+  _Cost: 2
   _Payable: 1
-  _IncreaseToGoldItemSpawnRate: 0.05
+  _IncreaseAmount: 0.1

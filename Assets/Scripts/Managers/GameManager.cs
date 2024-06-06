@@ -17,11 +17,14 @@ public class GameManager : Singleton<GameManager>
     public bool _GameOver = false;
 
     private int _MovesLeft = 0;
-    private int _MovesToGive = 5;
+    private int _MovesToGive = 8;
+
+    public int _TotalPurpleItemsToSpawn = 0;
+    public int _purpleItemsSpawned = 0;
 
     //GoldItem
     [SerializeField] private float _GoldenItemChance = 0.1f;
-    private int _GoldenItemBonus = 10;
+    [SerializeField] private int _GoldenItemBonus = 6;
 
     [SerializeField] private float _PurpleItemChance = 0.4f;
     [SerializeField] private float _RedItemChance = 0f;
@@ -41,27 +44,34 @@ public class GameManager : Singleton<GameManager>
         switch (_Level)
         {
             case 1:
-                _MovesToGive = 5;
+                _TotalPurpleItemsToSpawn = 1;
                 _RowsToGive = 1;
+                _MovesToGive = 8;
+                //ToDo: Put the logic to reset the game here
                 break;
             case 2:
-                _MovesToGive = 3;
+                _MovesToGive = 5;
                 _RowsToGive = 1;
                 break;
             case 5:
-                _MovesToGive = 3;
+                _MovesToGive += 1;
                 _RowsToGive = 2;
                 break;
             case 10:
-                _MovesToGive = 10;
+                _MovesToGive += 5;
                 _RowsToGive = 3;
                 break;
             case 25:
-                _MovesToGive = 8;
+                _TotalPurpleItemsToSpawn++;
+                _MovesToGive += 1;
                 _RowsToGive = 3;
                 break;
             case 30:
-                _MovesToGive = 5;
+                _MovesToGive += 3;
+                _RowsToGive = 3;
+                break;
+            case 50:
+                _MovesToGive -= 5;
                 _RowsToGive = 3;
                 break;
             default:

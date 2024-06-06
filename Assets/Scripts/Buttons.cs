@@ -73,9 +73,9 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
     {
         //Items sorted with presidence, the lower the item the higher the priority
 
-        if (GameManager.Instance.SpawnPurpleItem() && !ButtonManager.Instance._AlreadySpawnedPurpleItem)
+        if (GameManager.Instance.SpawnPurpleItem() && GameManager.Instance._purpleItemsSpawned < GameManager.Instance._TotalPurpleItemsToSpawn)
         {
-            ButtonManager.Instance._AlreadySpawnedPurpleItem = true;
+            GameManager.Instance._purpleItemsSpawned++;
             SetPurpleItem();
         }
         else if (GameManager.Instance.SpawnGoldenItem())

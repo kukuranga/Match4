@@ -15,6 +15,6 @@ MonoBehaviour:
   _Image: {fileID: 21300000, guid: 9872f938a11604b42b691f625f77b3fa, type: 3}
   _Description: Gold Item Buff (R)
   _Rarity: 2
-  _Cost: 3
+  _Cost: 10
   _Payable: 1
   _IncreaseTurns: 6

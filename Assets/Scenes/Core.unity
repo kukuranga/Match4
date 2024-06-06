@@ -1582,7 +1582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f165d7e7775b8924f86d716183baf907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Debugger: 0
+  _Debugger: 1
   _SwipeSensitivity: 3
   _Level: 1
   _Homepage:
@@ -1599,9 +1599,12 @@ MonoBehaviour:
     sceneName: SampleScene
   _RowsToGive: 1
   _GameOver: 0
-  _GoldenItemChance: 0.1
-  _PurpleItemChance: 0
-  _RedItemChance: 0
+  _TotalPurpleItemsToSpawn: 2
+  _purpleItemsSpawned: 0
+  _GoldenItemChance: 0.05
+  _GoldenItemBonus: 6
+  _PurpleItemChance: 1
+  _RedItemChance: 0.1
 --- !u!4 &1541434362
 Transform:
   m_ObjectHideFlags: 0
@@ -2060,7 +2063,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4f3b28abaf886664ba49b0046e247a04, type: 2}
   - {fileID: 11400000, guid: 0b256c72f2a9bf44c9ad60a0df26a532, type: 2}
   - {fileID: 11400000, guid: b0f74d85def060743b352da773064f2f, type: 2}
-  _RewardsChance: 0.3
+  _RewardsChance: 0.1
   _Luck: 0
 --- !u!4 &2093436374
 Transform:
