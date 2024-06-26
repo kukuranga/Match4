@@ -28,6 +28,13 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private float _PurpleItemChance = 0.4f;
     [SerializeField] private float _RedItemChance = 0f;
+    [SerializeField] private float _YellowItemChance = 0f;
+
+    [SerializeField] private float _FrozenItemChance = 0f;
+
+    public Color _RedItemColorChange;
+    public Color _PurpleItemColorChange;
+
 
     private void Update()
     {
@@ -80,6 +87,11 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void AddMovesToGive(int amount)
+    {
+        _MovesToGive += amount;
+    }
+
     public void AddToGoldSpawnChance(float _Increase)
     {
         _GoldenItemChance += _Increase;
@@ -90,9 +102,19 @@ public class GameManager : Singleton<GameManager>
         _PurpleItemChance += _Increase;
     }
 
+    public void IncreaseYellowItemChance(float _Increase)
+    {
+        _YellowItemChance += _Increase;
+    }
+
     public void IncreaseRedItemChance(float _Increase)
     {
         _RedItemChance += _Increase;
+    }
+
+    public void IncreaseFrozenItemChance(float _Increase)
+    {
+        _FrozenItemChance += _Increase;
     }
 
     public void IncreaseGoldItemBonus(int _value)
@@ -130,6 +152,17 @@ public class GameManager : Singleton<GameManager>
         return false;
     }
 
+    public bool SpawnYellowItem()
+    {
+        float c = Random.Range(0f, 1f);
+        if (c <= _YellowItemChance)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public bool SpawnRedItem()
     {
         float c = Random.Range(0f, 1f);
@@ -139,6 +172,17 @@ public class GameManager : Singleton<GameManager>
         }
         return false;
     }
+
+    public bool SpawnFrozenItem()
+    {
+        float c = Random.Range(0f, 1f);
+        if(c <= _FrozenItemChance)
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     public int GetMovesToGive()
     {

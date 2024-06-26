@@ -12,7 +12,6 @@ public class Shake : MonoBehaviour
     void Start()
     {
         //Adds every shake component to the vfx Manager
-        VFXManager.Instance._Shakes.Add(this);
         _OriginalPosition = transform.position;
     }
 
