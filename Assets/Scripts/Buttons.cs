@@ -12,6 +12,9 @@ public enum ItemType
     TreasureItem,
     MotionItem,
     RedItem,
+    FrozenItem,
+    SemiMotionItem,
+
 }
 
 public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, IDragHandler
@@ -22,6 +25,7 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
     public Sprite _PurpleItemSprite;
     public Sprite _GoldenItemSprite;
     public Sprite _RedItemSprite;
+    public Sprite _YellowItemSprite;
 
     public int _Index = 0;
     public int _CorrectPosition = 0;
@@ -31,6 +35,7 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
     public Container _Container;
     public Image _Image;
     public GameObject _GoldenImage;
+    public GameObject _FrozenImage;
 
     private RectTransform _rect;
     private Quaternion _StartingRotation;
@@ -54,6 +59,9 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
             SetInteractable(false);
         else
             SetInteractable(true);
+
+        if (IsCorrect() && _ItemType == ItemType.FrozenItem)
+            Unfreeze();
         
     }
 
@@ -76,12 +84,17 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
         if (GameManager.Instance.SpawnPurpleItem() && GameManager.Instance._purpleItemsSpawned < GameManager.Instance._TotalPurpleItemsToSpawn)
         {
             GameManager.Instance._purpleItemsSpawned++;
+            //TODO: Check if more than 1 purple item has been spawned and check if the yellow item has spwaned before spawning a second purple item
             SetPurpleItem();
         }
+        else if(GameManager.Instance.SpawnYellowItem())
+            SetYellowItem();
         else if (GameManager.Instance.SpawnGoldenItem())
             SetGoldenItem();
         else if (GameManager.Instance.SpawnRedItem())
             SetRedItem();
+        else if (GameManager.Instance.SpawnFrozenItem())
+            SetFrozenItem();
         
     }
 
@@ -145,9 +158,20 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
                 break;
             case ItemType.RedItem:
                 _Image.sprite = _RedItemSprite;
-                    break;
+                break;
+            case ItemType.SemiMotionItem:
+                _Image.sprite = _YellowItemSprite;
+                 break;
             
         }
+    }
+
+    public bool IsCorrect()
+    {
+        if(_Container._Index == _CorrectPosition)        
+            return true;
+        
+        return false;
     }
 
     public RectTransform GetRectTransform()
@@ -202,22 +226,24 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
         //_Image.color = Color.blue;
     }
 
+    private void SetYellowItem()
+    {
+        _ItemType = ItemType.SemiMotionItem;
+        SetSprite(_YellowItemSprite);
+    }
+
     private void SetRedItem()
     {
         _ItemType = ItemType.RedItem;
         _Image.sprite = _RedItemSprite;
     }
 
-    // OnClick
-    public void CreateButtons()
+    private void SetFrozenItem()
     {
-        //Commented out to use the pointer click below
-        //if (_Interactable)
-        //{
-        //    _Pressed = true;
-        //    ButtonManager.Instance.SelectButtons(this);
-        //}        
+        _ItemType  = ItemType.FrozenItem;
+        _FrozenImage.SetActive(true);
     }
+
     private Vector2 startTouchPosition;
     //private bool isSwiping = false;
 
@@ -229,7 +255,6 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
             _IsSwiping = true;
             Zoom(1.2f);
             SetSelected();
-            VFXManager.Instance.StartPotionShake();
         }
     }
 
@@ -238,7 +263,6 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
         _IsSwiping = false;
         Zoom(1);
         SetUnSelected();
-        VFXManager.Instance.StopAllShaking();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -250,7 +274,6 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
 
             float absX = Mathf.Abs(swipeDirection.x);
             float absY = Mathf.Abs(swipeDirection.y);
-            Debug.Log(absX + " : " + absY);
             float _SwipeSensitivity = GameManager.Instance._SwipeSensitivity;
 
             if ((swipeDirection.x > _SwipeSensitivity || swipeDirection.y > _SwipeSensitivity) ||(swipeDirection.x < -_SwipeSensitivity || swipeDirection.y < -_SwipeSensitivity))
@@ -333,6 +356,15 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
         float offsetY = _amplitude * Mathf.Sin(Time.time * _frequency);
 
         _rect.anchoredPosition = new Vector2(_rect.anchoredPosition.x, _originalYPosition + offsetY);
+    }
+    public void Unfreeze()
+    {
+        if (_ItemType == ItemType.FrozenItem)
+        {
+            _ItemType = ItemType.NormalItem;
+            _FrozenImage.SetActive(false);
+            OverwierManager.Instance.FadeIn(Color.cyan, 0.2f, 0.1f);
+        }
     }
 
     public void MoveToContainer()

@@ -12,7 +12,7 @@ public class RedShift : MonoBehaviour
 
     private void Start()
     {
-        VFXManager.Instance._Redshifts.Add(this);
+        //VFXManager.Instance._Redshifts.Add(this);
         _Image = GetComponent<SpriteRenderer>();
     }
 

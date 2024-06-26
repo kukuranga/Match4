@@ -23,8 +23,8 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
     public RewardButton _RewardButton2;
     public RewardButton _RewardButton3;
 
-    public List<Container> _Containers = new List<Container>();
-    public List<Buttons> _ButtonsRow = new List<Buttons>();
+    public List<Container> _Containers = new();
+    public List<Buttons> _ButtonsRow = new();
 
     public Buttons _FirstClicked;
     public Buttons _SecondClicked;
@@ -32,9 +32,9 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
 
     private bool _IsFirstActiveFrame = true;
     public float _ItemMoveSpeed = 2300f;
-    private List<Buttons> _OrderedButtonList = new List<Buttons>();
+    private List<Buttons> _OrderedButtonList = new();
 
-    private List<GameObject> _InstatiatedButtons = new List<GameObject>();
+    private List<GameObject> _InstatiatedButtons = new();
 
 
 
@@ -62,7 +62,7 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
 
         _MoveText.text = _MovesLeft.ToString();
 
-        _WinText.text = GameManager.Instance._Level.ToString();//_CorrectAnswers.ToString();
+        _WinText.text = GameManager.Instance._Level.ToString();
         if(_MovesLeft <= 0)
         {
             _GameOverScreen.SetActive(true);
@@ -122,16 +122,29 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
             //st first & second click than move them
             _FirstClicked = btn;
             _FirstClicked.SetUnSelected();
-            VFXManager.Instance.StopAllShaking();
             _FirstClicked.Zoom(1f);
-
-            if (_FirstClicked._ItemType == ItemType.MotionItem || _SecondClicked._ItemType == ItemType.MotionItem)
+            
+            if(_FirstClicked._ItemType == ItemType.MotionItem && _SecondClicked._ItemType == ItemType.MotionItem)
+            {
+                PurpleItemClash();
+            }
+            else if (_FirstClicked._ItemType == ItemType.MotionItem || _SecondClicked._ItemType == ItemType.MotionItem)
             {
                 PurpleItemMove();
+            }
+            else if (_FirstClicked._ItemType == ItemType.SemiMotionItem || _SecondClicked._ItemType == ItemType.SemiMotionItem)
+            {
+                YellowItemMove();
+            }
+            else if (_FirstClicked._ItemType == ItemType.FrozenItem || _SecondClicked._ItemType == ItemType.FrozenItem)
+            {
+                //Todo: add a tell (ANIMATION OR SFX) to show its not interactable
+                _MovesLeft++;
             }
             else if (_FirstClicked._ItemType == ItemType.RedItem || _SecondClicked._ItemType == ItemType.RedItem)
             {
                 //TODO: Make the move penalty happen after the animation ends
+                OverwierManager.Instance.FadeIn(GameManager.Instance._RedItemColorChange, 0.4f, 0.5f);
                 _MovesLeft--;
                 SwapPositionsAndContainers(_FirstClicked, _SecondClicked);
             }
@@ -145,7 +158,7 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
             
 
             _MovesLeft--;
-            CheckMoves();
+            //CheckMoves();
         }
 
     }
@@ -250,7 +263,7 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
 
     //Checks the number of moves left the player has
     private void CheckMoves()
-    {
+    {      
         if(_MovesLeft <= 0)
         {
             GameManager.Instance.GameOver();
@@ -322,10 +335,16 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
         a.SetDance(true);
         _MovingItems--;
         CheckPositions();
-
+        CheckMoves();
         
 
         yield return null;
+    }
+
+    public void PurpleItemClash()
+    {
+        OrderButtonList();
+        StartCoroutine(RandomizeAllItems());
     }
 
     bool _PurpleCanMove = true;
@@ -333,6 +352,8 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
     {
         if (_PurpleCanMove)
         {
+            //OverwierManager.Instance.FadeIn(GameManager.Instance._PurpleItemColorChange,0.2f, 0.4f);
+
             _PurpleCanMove = false;
             OrderButtonList();
 
@@ -345,7 +366,6 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
                 if (btn == _FirstClicked)
                 {
                     _sone++;
-
                     break;
                 }
                 _sone++;
@@ -424,6 +444,176 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
         _PurpleCanMove = true;
     }
 
+    bool _yellowCanMove = true;
+    private void YellowItemMove()
+    {
+        if (_yellowCanMove)
+        {
+            //OverwierManager.Instance.FadeIn(GameManager.Instance._PurpleItemColorChange,0.2f, 0.4f);
+
+            _yellowCanMove = false;
+            OrderButtonList();
+
+            int one = 0;
+            int two = 0;
+            int _sone = 0;
+            int _stwo = 0;
+            foreach (Buttons btn in _OrderedButtonList)
+            {
+                if (btn == _FirstClicked)
+                {
+                    _sone++;
+                    break;
+                }
+                _sone++;
+            }
+            foreach (Buttons btn in _OrderedButtonList)
+            {
+                if (btn == _SecondClicked)
+                {
+                    _stwo++;
+                    break;
+                }
+                _stwo++;
+            }
+
+            for (int i = 0; i < _OrderedButtonList.Count; i++)
+            {
+                if (_OrderedButtonList[i] == _FirstClicked)
+                {
+                    if (i < 3)
+                        one = 1;
+                    else if (i < 6)
+                        one = 2;
+                    else
+                        one = 3;
+                    break;
+                }
+            }
+            for (int i = 0; i < _OrderedButtonList.Count; i++)
+            {
+                if (_OrderedButtonList[i] == _SecondClicked)
+                {
+                    if (i < 3)
+                        two = 1;
+                    else if (i < 6)
+                        two = 2;
+                    else
+                        two = 3;
+                    break;
+                }
+            }
+
+
+            int _CPos = 0;
+            int _RPos = 0;
+            if (_FirstClicked._ItemType == ItemType.SemiMotionItem)
+            {
+                _CPos = GetColumnNumber(_FirstClicked);
+                _RPos = GetRowNumber(_FirstClicked);
+            }
+            else
+            {
+                _CPos = GetColumnNumber(_SecondClicked);
+                _RPos = GetRowNumber(_SecondClicked);
+            }
+            
+            int difference = (one - two);
+            int sdiff = (_sone - _stwo);
+
+            if (_SecondClicked._ItemType == ItemType.MotionItem)
+            {
+                difference = -difference;
+                sdiff = -sdiff;
+            }
+
+            foreach (Buttons s in _ButtonsRow)
+            {
+                s.SetInteractable(false);
+            }
+
+            OrderButtonList();
+
+            if (difference >= 1)
+            {
+                StartCoroutine(MoveSectionUp(_CPos));
+            }
+            else if (difference <= -1)
+            {
+                StartCoroutine(MoveSectionDown(_CPos));
+            }
+            else if (sdiff >= 1)
+            {
+                StartCoroutine(MoveSectionLeft(_RPos));
+            }
+            else if (sdiff <= -1)
+            {
+                StartCoroutine(MoveSectionRight(_RPos));
+            }
+
+            //todo remove this for testing
+            //_yellowCanMove = true;
+        }
+    }
+
+    IEnumerator RandomizeAllItems()
+    {
+        List<int> _Nums = new();
+        int v = 0;
+        foreach (var b in _OrderedButtonList)
+        {
+            _Nums.Add(v);
+            v++;
+        }
+
+        // Randomize the list
+        RandomizeList(_Nums);
+
+        // Temporary list to store new container assignments
+        List<Container> newContainers = new List<Container>(_OrderedButtonList.Count);
+
+        // Ensure the newContainers list has the same length as _OrderedButtonList
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            newContainers.Add(null);
+        }
+
+        // Assign every button in order to the new container using the randomized list
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            newContainers[i] = _OrderedButtonList[_Nums[i]]._Container;
+        }
+
+        // Apply the new container assignments
+        for (int i = 0; i < _OrderedButtonList.Count; i++)
+        {
+            _OrderedButtonList[i]._Container = newContainers[i];
+        }
+
+        // Move to container
+        foreach (Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+        CheckPositions();
+        EndPurpleMove();
+
+        yield return null;
+    }
+    void RandomizeList<T>(List<T> list)
+    {
+        int count = list.Count;
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = Random.Range(i, count);
+            T temp = list[i];
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
+        }
+    }
+
+    #region Movement Coroutines
     IEnumerator MoveAllDown()
     {
         for (int i = 0; i < _OrderedButtonList.Count; i++)
@@ -528,6 +718,106 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
         yield return null;
     }
 
+    IEnumerator MoveSectionDown(int _col)
+    {
+        int _ref = _col - 1;
+
+        _OrderedButtonList[_ref]._Container = _Containers[_ref + 3];
+
+        _OrderedButtonList[_ref +3]._Container = _Containers[_ref + 6];
+
+        _OrderedButtonList[_ref +6]._Container = _Containers[_ref];
+
+        foreach (Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+        CheckPositions();
+        foreach (Buttons s in _ButtonsRow)
+        {
+            s.SetInteractable(true);
+        }
+        _yellowCanMove = true;
+
+        yield return null;
+    }
+
+    IEnumerator MoveSectionRight(int _row)
+    {
+        int _ref = (_row - 1) * 3;
+
+        _OrderedButtonList[_ref]._Container = _Containers[_ref + 1];
+
+        _OrderedButtonList[_ref + 1]._Container = _Containers[_ref + 2];
+
+        _OrderedButtonList[_ref + 2]._Container = _Containers[_ref];
+
+        foreach (Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+        CheckPositions();
+        foreach (Buttons s in _ButtonsRow)
+        {
+            s.SetInteractable(true);
+        }
+        _yellowCanMove = true;
+
+        yield return null;
+    }
+    IEnumerator MoveSectionUp(int _col)
+    {
+        int _ref = _col - 1;
+
+        _OrderedButtonList[_ref]._Container = _Containers[_ref + 6];
+
+        _OrderedButtonList[_ref +3]._Container = _Containers[_ref];
+
+        _OrderedButtonList[_ref +6]._Container = _Containers[_ref + 3];
+
+        foreach (Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+        CheckPositions();
+        foreach (Buttons s in _ButtonsRow)
+        {
+            s.SetInteractable(true);
+        }
+        _yellowCanMove = true;
+
+        yield return null;
+    }
+
+    IEnumerator MoveSectionLeft(int _row)
+    {
+        int _ref = (_row - 1) * 3;
+
+        _OrderedButtonList[_ref]._Container = _Containers[_ref + 2];
+
+        _OrderedButtonList[_ref + 1]._Container = _Containers[_ref];
+
+        _OrderedButtonList[_ref + 2]._Container = _Containers[_ref + 1];
+
+        foreach (Buttons _btn in _ButtonsRow)
+        {
+            _btn.MoveToContainer();
+        }
+
+        CheckPositions();
+        foreach (Buttons s in _ButtonsRow)
+        {
+            s.SetInteractable(true);
+        }
+        _yellowCanMove = true;
+
+        yield return null;
+    }
+    #endregion
+
     private void OrderButtonList()
     {
         _OrderedButtonList.Clear();
@@ -595,10 +885,53 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
         _ButtonsRow.Add(btn);
     }
 
+    private int GetColumnNumber(Buttons _btn)
+    {
+        OrderButtonList();
+
+        int i = 0;
+
+        foreach (Buttons b in _OrderedButtonList)
+        {
+            if (b == _btn)
+                break;
+            i++;
+        }
+
+        if (i == 0 || i == 3 || i == 6)
+            return 1;
+        else if (i == 1 || i == 4 || i == 7)
+            return 2;
+        else
+            return 3;
+    }
+
+    private int GetRowNumber(Buttons _btn)
+    {
+        OrderButtonList();
+
+        int i = 0;
+
+        foreach (Buttons b in _OrderedButtonList)
+        {
+            if (b == _btn)
+                break;
+            i++;
+        }
+
+        if (i < 3)
+            return 1;
+        else if (i > 2 && i < 6)
+            return 2;
+        else
+            return 3;
+    }
+
     bool _GameWon = false;
     //Checks if the images are in the correct positions
     private void CheckPositions()
     {
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         SetCorrectNumbers();
 
         CheckBtnCorrect();
@@ -611,10 +944,25 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
 
 
             GameManager.Instance.StoreMoves(_MovesLeft);
-            //_CharacterController.SetAttack(true);
-            VFXManager.Instance.StartPotionShake();
             _Containers[0].SetWave(true);
             GameManager.Instance.GameWon();
+        }
+
+        //FREEZE ITEM CODE
+        OrderButtonList();
+        foreach (Buttons _btn in _OrderedButtonList)
+        {
+            if (_btn._ItemType == ItemType.FrozenItem)
+            {
+                List<Buttons> _sur = GetSurroundingObjectsCardinal(_btn);
+                foreach (Buttons _b in _sur)
+                {
+                    if (_b.IsCorrect())
+                    {
+                        _btn.Unfreeze();
+                    }
+                }
+            }
         }
     }
 
@@ -649,7 +997,7 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
     }
 
     //Random number list to assign the correct number
-    private List<int> uniqueNumbers = new List<int>();
+    private List<int> uniqueNumbers = new();
 
     //Assigns the correct positions for each button 
     private void AssignNumbers()
@@ -793,5 +1141,47 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
             return null; // or handle the situation accordingly
         }
     }
+    public List<Buttons> GetSurroundingObjectsCardinal(Buttons targetObject)
+    {
+        List<Buttons> surroundingObjects = new List<Buttons>();
 
+        // Find the index of the target object in the list
+        int targetIndex = _OrderedButtonList.IndexOf(targetObject);
+        int gridSize = 3;// GameManager.Instance._RowsToGive;
+
+        if (targetIndex == -1)
+        {
+            Debug.LogError("Object not found in the list.");
+            return surroundingObjects;
+        }
+
+        // Calculate the row and column of the target object in the 3x3 grid
+        int targetRow = targetIndex / 3;
+        int targetColumn = targetIndex % gridSize;
+
+        // Define the positions of the surrounding objects (N, S, E, W)
+        int[,] directions = new int[,]
+        {
+            { 0, -1 }, // North
+            { 0, 1 },  // South
+            { -1, 0 }, // West
+            { 1, 0 }   // East
+        };
+
+        // Check each direction
+        for (int i = 0; i < directions.GetLength(0); i++)
+        {
+            int newRow = targetRow + directions[i, 1];
+            int newColumn = targetColumn + directions[i, 0];
+
+            // Ensure the position is within the bounds of the 3x3 grid
+            if (newRow >= 0 && newRow < gridSize && newColumn >= 0 && newColumn < gridSize)
+            {
+                int index = newRow * gridSize + newColumn;
+                surroundingObjects.Add(_OrderedButtonList[index]);
+            }
+        }
+
+        return surroundingObjects;
+    }
 }

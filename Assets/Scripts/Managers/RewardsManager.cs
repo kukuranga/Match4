@@ -7,13 +7,13 @@ public class RewardsManager : Singleton<RewardsManager>
 
     //Reward or power up Screen
     public Sprite _TreasureSprite;
-    [SerializeField] private List<Reward> _Rewards = new List<Reward>();
-    private List<Reward> _CommonRewards = new List<Reward>();
-    private List<Reward> _UncommonRewards = new List<Reward>();
-    private List<Reward> _RareRewards = new List<Reward>();
-    private List<Reward> _MythicRewards = new List<Reward>();
+    [SerializeField] private List<Reward> _Rewards = new();
+    private readonly List<Reward> _CommonRewards = new();
+    private readonly List<Reward> _UncommonRewards = new();
+    private readonly List<Reward> _RareRewards = new();
+    private readonly List<Reward> _MythicRewards = new();
 
-    private List<Reward> _ActiveRewards = new List<Reward>();
+    private List<Reward> _ActiveRewards = new();
     [SerializeField] private float _RewardsChance = 0.5f;
     [Range(0,9)]
     public int _Luck = 0;  
@@ -68,6 +68,11 @@ public class RewardsManager : Singleton<RewardsManager>
     public void IncreaseLuck(int rate)
     {
         _Luck += rate;
+    }
+
+    public void IncreaseMovesEarned(int amount)
+    {
+        GameManager.Instance.AddMovesToGive(amount);
     }
 
     public void SetRewards(RewardButton r1, RewardButton r2, RewardButton r3 )
