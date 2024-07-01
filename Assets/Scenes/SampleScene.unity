@@ -1166,6 +1166,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 342655680}
   m_Mesh: {fileID: 696642083}
+<<<<<<< HEAD
 --- !u!1 &364649399
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,6 +1200,8 @@ Transform:
   m_Father: {fileID: 1715812688}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+=======
+>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f
 --- !u!1 &374082866
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,8 +1569,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2fbd0764102b28488eb01fb5028af21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   _LevelImage: {fileID: 1842487826}
   _MovesImage: {fileID: 1812693215}
+=======
+>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f
 --- !u!4 &472362336
 Transform:
   m_ObjectHideFlags: 0
@@ -8086,7 +8092,10 @@ MonoBehaviour:
   _PurpleItemSprite: {fileID: 0}
   _GoldenItemSprite: {fileID: 0}
   _RedItemSprite: {fileID: 0}
+<<<<<<< HEAD
   _YellowItemSprite: {fileID: 0}
+=======
+>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f
   _Index: 0
   _CorrectPosition: 0
   _Pressed: 0
@@ -8115,7 +8124,10 @@ MonoBehaviour:
   _PurpleItemSprite: {fileID: 0}
   _GoldenItemSprite: {fileID: 0}
   _RedItemSprite: {fileID: 0}
+<<<<<<< HEAD
   _YellowItemSprite: {fileID: 0}
+=======
+>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f
   _Index: 0
   _CorrectPosition: 0
   _Pressed: 0
@@ -8144,7 +8156,10 @@ MonoBehaviour:
   _PurpleItemSprite: {fileID: 0}
   _GoldenItemSprite: {fileID: 0}
   _RedItemSprite: {fileID: 0}
+<<<<<<< HEAD
   _YellowItemSprite: {fileID: 0}
+=======
+>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f
   _Index: 0
   _CorrectPosition: 0
   _Pressed: 0

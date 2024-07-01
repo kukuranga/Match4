@@ -5,10 +5,15 @@ using UnityEngine.UI;
 
 public class VFXManager : Singleton<VFXManager>
 {
+<<<<<<< HEAD
+=======
+    //TODO: add effects for low onn moves 
+>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f
 
     public Image _LevelImage;
     public Image _MovesImage;
 
+<<<<<<< HEAD
     private bool _InUse = false;
 
     public void FadeInLevel(Color _c, float _Alpha, float duration)
@@ -61,4 +66,60 @@ public class VFXManager : Singleton<VFXManager>
         _InUse = false;
         yield return null;
     }
+=======
+
+
+
+
+    //public List<Shake> _Shakes = new List<Shake>();
+    //public List<RedShift> _Redshifts = new List<RedShift>();
+
+
+    //public void StartAllShake()
+    //{
+    //    foreach (Shake s in _Shakes)
+    //    {
+    //        s.SetShaking();
+    //    }
+    //    foreach (RedShift s in _Redshifts)
+    //    {
+    //        s.StartRedShift();
+    //    }
+    //    Code To vibrate but was too anoying in practice
+    //     if (SystemInfo.supportsVibration)
+    //    {
+    //        Handheld.Vibrate();
+    //    }
+    //}
+
+    //public void StartPotionShake()
+    //{
+    //    foreach (Shake s in _Shakes)
+    //    {
+    //        if (s._IsPotion)
+    //        {
+    //            s.SetShaking();
+    //        }
+    //    }
+    //    foreach (RedShift s in _Redshifts)
+    //    {
+    //        if (s._IsPotion)
+    //        {
+    //            s.StartRedShift();
+    //        }
+    //    }
+    //}
+
+    //public void StopAllShaking()
+    //{
+    //    foreach (Shake s in _Shakes)
+    //    {
+    //        s.StopShaking();
+    //    }
+    //    foreach (RedShift s in _Redshifts)
+    //    {
+    //        s.StopRedShift();
+    //    }
+    //}
+>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f
 }

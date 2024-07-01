@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Shaders/Scripts.meta
 guid: 219346054cab6334c9e7a5a5a474d8eb
 folderAsset: yes
 DefaultImporter:
+========
+guid: 451cb3c7014d133448179c394f73dc3d
+NativeFormatImporter:
+>>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f:Assets/ScriptableObjects/Rewards/IncreaseMoves/IncreaseMoves 1.asset.meta
   externalObjects: {}
+  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

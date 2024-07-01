@@ -1603,10 +1603,17 @@ MonoBehaviour:
   _purpleItemsSpawned: 0
   _GoldenItemChance: 0.05
   _GoldenItemBonus: 6
+<<<<<<< HEAD
   _PurpleItemChance: 0
   _RedItemChance: 0
   _YellowItemChance: 0
   _FrozenItemChance: 0
+=======
+  _PurpleItemChance: 1
+  _RedItemChance: 0
+  _YellowItemChance: 0.6
+  _FrozenItemChance: 0.6
+>>>>>>> f78912776b17da7587f6aef534cf12a8db0eb25f
   _RedItemColorChange: {r: 0.6603774, g: 0.021804927, b: 0.021804927, a: 0}
   _PurpleItemColorChange: {r: 0.6364209, g: 0.03524386, b: 0.6792453, a: 0}
 --- !u!4 &1541434362
