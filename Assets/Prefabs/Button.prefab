@@ -482,6 +482,7 @@ GameObject:
   - component: {fileID: 798766886053213825}
   - component: {fileID: 7425869788079544945}
   - component: {fileID: 9145324260352757725}
+  - component: {fileID: 8561322493595932534}
   m_Layer: 6
   m_Name: Frozen Item
   m_TagString: Untagged
@@ -530,7 +531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.10323961, g: 0.754717, b: 0.7096681, a: 0.83137256}
+  m_Color: {r: 0.10323961, g: 0.754717, b: 0.7096681, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -547,3 +548,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8561322493595932534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3541506553060700351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce2509a0154ac4949b99737fd542f4c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Mat: {fileID: 2100000, guid: b15d50780b9443444ba070a47d80f79e, type: 2}
+  _isDisolveing: 0

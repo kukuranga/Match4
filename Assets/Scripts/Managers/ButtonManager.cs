@@ -158,6 +158,7 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
             
 
             _MovesLeft--;
+            VFXManager.Instance.FadeInMoves(Color.red, 0.3f, 0.3f);
             //CheckMoves();
         }
 

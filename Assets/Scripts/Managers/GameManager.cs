@@ -71,13 +71,17 @@ public class GameManager : Singleton<GameManager>
             case 25:
                 _TotalPurpleItemsToSpawn++;
                 _MovesToGive += 1;
+                IncreaseFrozenItemChance(0.2f);
+                IncreaseYellowItemChance(0.1f);
                 _RowsToGive = 3;
                 break;
             case 30:
+                IncreaseFrozenItemChance(0.1f);
                 _MovesToGive += 3;
                 _RowsToGive = 3;
                 break;
             case 50:
+                IncreaseYellowItemChance(0.1f);
                 _MovesToGive -= 5;
                 _RowsToGive = 3;
                 break;

@@ -1582,7 +1582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f165d7e7775b8924f86d716183baf907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Debugger: 1
+  _Debugger: 0
   _SwipeSensitivity: 3
   _Level: 1
   _Homepage:
@@ -1603,10 +1603,10 @@ MonoBehaviour:
   _purpleItemsSpawned: 0
   _GoldenItemChance: 0.05
   _GoldenItemBonus: 6
-  _PurpleItemChance: 1
+  _PurpleItemChance: 0
   _RedItemChance: 0
-  _YellowItemChance: 0.6
-  _FrozenItemChance: 0.6
+  _YellowItemChance: 0
+  _FrozenItemChance: 0
   _RedItemColorChange: {r: 0.6603774, g: 0.021804927, b: 0.021804927, a: 0}
   _PurpleItemColorChange: {r: 0.6364209, g: 0.03524386, b: 0.6792453, a: 0}
 --- !u!4 &1541434362
