@@ -14,7 +14,7 @@ public class RewardsManager : Singleton<RewardsManager>
     private readonly List<Reward> _MythicRewards = new();
 
     private List<Reward> _ActiveRewards = new();
-    [SerializeField] private float _RewardsChance = 0.5f;
+    public float _RewardsChance = 0.5f;
     [Range(0,9)]
     public int _Luck = 0;  
     private float[,] _LuckTable = new float[,]

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MoveUpOnActive : MonoBehaviour
 {
+    [SerializeField] bool _OnActive = false;
     [SerializeField] bool _Loadingscreen = false;
     [SerializeField] bool _Loop = false;
     private Vector2 _StartingPos;
@@ -21,14 +22,32 @@ public class MoveUpOnActive : MonoBehaviour
 
     private void Start()
     {
-        if(_Loadingscreen)
+        if (!_OnActive)
         {
-            _RT.anchoredPosition = _OutsidePosition.anchoredPosition;
-            _Loadingscreen = false;
+            if (_Loadingscreen)
+            {
+                _RT.anchoredPosition = _OutsidePosition.anchoredPosition;
+                _Loadingscreen = false;
+            }
+            else
+                SceneLoader.Instance.onSceneLoadedEvent.AddListener(MoveDown);
         }
-        else
-        SceneLoader.Instance.onSceneLoadedEvent.AddListener(MoveDown);
     }
+
+    private void OnEnable()
+    {
+        if (_OnActive)
+        {
+            if (_Loadingscreen)
+            {
+                _RT.anchoredPosition = _OutsidePosition.anchoredPosition;
+                _Loadingscreen = false;
+            }
+            else
+                SceneLoader.Instance.onSceneLoadedEvent.AddListener(MoveDown);
+        }
+    }
+
     private void FixedUpdate()
     {
         LerpToPoint();

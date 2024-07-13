@@ -45,13 +45,13 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
 
     private void Start()
     {
+        //GameManager.Instance.FirstGame();
         _MovesLeft = GameManager.Instance.SetMoves();
         RandomizeAndSetCorrectPositions();
     }
 
     private void Update()
     {
-
         if(_IsFirstActiveFrame)
         {
             SetCorrectNumbers();
@@ -89,9 +89,6 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
     {
         _MovesLeft += GameManager.Instance.GetGoldenBonus();
     }
-
-    //TODO: Change logic to only work either one way up down left oo right ----------------------------------------------------------------
-
     
     public void SelectButtons(Buttons btn , int Direction) //called on buttons drag
     {
@@ -127,14 +124,17 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
             if(_FirstClicked._ItemType == ItemType.MotionItem && _SecondClicked._ItemType == ItemType.MotionItem)
             {
                 PurpleItemClash();
+                PointsManager.Instance.AddPoint(5);
             }
             else if (_FirstClicked._ItemType == ItemType.MotionItem || _SecondClicked._ItemType == ItemType.MotionItem)
             {
                 PurpleItemMove();
+                PointsManager.Instance.AddPoint(3);
             }
             else if (_FirstClicked._ItemType == ItemType.SemiMotionItem || _SecondClicked._ItemType == ItemType.SemiMotionItem)
             {
                 YellowItemMove();
+                PointsManager.Instance.AddPoint(2);
             }
             else if (_FirstClicked._ItemType == ItemType.FrozenItem || _SecondClicked._ItemType == ItemType.FrozenItem)
             {
@@ -147,16 +147,19 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
                 OverwierManager.Instance.FadeIn(GameManager.Instance._RedItemColorChange, 0.4f, 0.5f);
                 _MovesLeft--;
                 SwapPositionsAndContainers(_FirstClicked, _SecondClicked);
+                PointsManager.Instance.AddPoint(2);
             }
             else
             {
                 SwapPositionsAndContainers(_FirstClicked, _SecondClicked);
+                PointsManager.Instance.AddPoint();
             }
             _FirstClicked = null;
             _SecondClicked = null;
 
-            
 
+            StatsManager.Instance.AddToTotalMovesUsed(1);
+            StatsManager.Instance.CheckHighestMoveCount(_MovesLeft);
             _MovesLeft--;
 <<<<<<< HEAD
             VFXManager.Instance.FadeInMoves(Color.red, 0.3f, 0.3f);
@@ -555,8 +558,6 @@ public class ButtonManager : Singleton<ButtonManager>//, IPointerDownHandler, IP
                 StartCoroutine(MoveSectionRight(_RPos));
             }
 
-            //todo remove this for testing
-            //_yellowCanMove = true;
         }
     }
 

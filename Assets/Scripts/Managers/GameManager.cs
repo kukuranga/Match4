@@ -21,6 +21,21 @@ public class GameManager : Singleton<GameManager>
 
     public int _TotalPurpleItemsToSpawn = 0;
     public int _purpleItemsSpawned = 0;
+    public int _YellowItemsSpawned = 0;
+
+    //Synth Upgrade Stats;
+
+    [SerializeField] int _StartMoveBonusMultiplier = 1;
+    [SerializeField] int _RoundsMoveBonusMultiplier = 1;
+    [SerializeField] float _GoldItemChanceBonusMultiplier = 0.01f;
+    [SerializeField] float _TreasureItemChanceMultiplier = 0.01f;
+    [SerializeField] float _LuckBonusMultiplier = 0.02f;
+
+    private int _StartMoveBonus = 0;
+    private int _RoundWonBonus = 0;
+    private int _GoldItemChanceBonus = 0;
+    private int _TreasureItemChanceBonus = 0;
+    private int _LuckBonus = 0;
 
     //GoldItem
     [SerializeField] private float _GoldenItemChance = 0.1f;
@@ -31,6 +46,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float _YellowItemChance = 0f;
 
     [SerializeField] private float _FrozenItemChance = 0f;
+    [SerializeField] private int _StartingMoves = 8;
 
     public Color _RedItemColorChange;
     public Color _PurpleItemColorChange;
@@ -45,6 +61,11 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void FirstGame()
+    {
+        CheckLevel();
+    }
+
     private void CheckLevel()
     {
         Debug.Log("Level checkd");
@@ -53,7 +74,8 @@ public class GameManager : Singleton<GameManager>
             case 1:
                 _TotalPurpleItemsToSpawn = 1;
                 _RowsToGive = 1;
-                _MovesToGive = 8;
+                _MovesToGive = _StartingMoves;
+                AddBonusesToGame();
                 //ToDo: Put the logic to reset the game here
                 break;
             case 2:
@@ -65,7 +87,10 @@ public class GameManager : Singleton<GameManager>
                 _RowsToGive = 2;
                 break;
             case 10:
-                _MovesToGive += 5;
+                _MovesToGive += 3;
+                break;
+            case 15:
+                _MovesToGive += 2;
                 _RowsToGive = 3;
                 break;
             case 25:
@@ -89,6 +114,24 @@ public class GameManager : Singleton<GameManager>
                 //_MovesToGive--;
                 break;
         }
+    }
+
+    public void SetSynthBonuses(int _StartMoves, int _Move, int _GoldItems, int _TreasureItems, int _Luck)
+    {
+        _StartMoveBonus = _StartingMoves;
+        _StartMoveBonus = _Move;
+        _GoldItemChanceBonus = _GoldItems;
+        _TreasureItemChanceBonus = _TreasureItems;
+        _LuckBonus = _Luck;
+    }
+
+    private  void AddBonusesToGame()
+    {
+        _StartingMoves += (_StartMoveBonus * _StartMoveBonusMultiplier);
+        _MovesToGive += (_RoundWonBonus * _StartMoveBonusMultiplier);
+        _GoldenItemChance += (_GoldItemChanceBonus * _GoldItemChanceBonusMultiplier);
+        RewardsManager.Instance._RewardsChance += (_TreasureItemChanceBonus * _TreasureItemChanceMultiplier);
+        RewardsManager.Instance._Luck += Mathf.RoundToInt(_LuckBonus * _LuckBonusMultiplier);
     }
 
     public void AddMovesToGive(int amount)
@@ -216,19 +259,27 @@ public class GameManager : Singleton<GameManager>
     public void GameWon()
     {
         SetMoves();
-        IncreasePurpleItemChance(0.01f);
-        IncreaseRedItemChance(0.006f);
+        IncreasePurpleItemChance(0.001f);
+        IncreaseRedItemChance(0.001f);
+        _purpleItemsSpawned = 0;
+        _YellowItemsSpawned = 0;
         _SpawnDecay = 1;
+        StatsManager.Instance.AddToLevelsCompleted(1);
+        StatsManager.Instance.CheckHighestLevelCompleted(_Level);
         _Level++;
         CheckLevel();
     }
 
     public void ResetGame()
     {
+        StatsManager.Instance.AddToTotalNumberOfRuns(1);
         _Level = 1;
         _MovesLeft = 0;
         _SpawnDecay = 1;
         _GameOver = false;
+        _purpleItemsSpawned = 0;
+        _YellowItemsSpawned = 0;
+        PointsManager.Instance.ResetPoints();
         CheckLevel();
     }
 }

@@ -83,9 +83,13 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
 
         if (GameManager.Instance.SpawnPurpleItem() && GameManager.Instance._purpleItemsSpawned < GameManager.Instance._TotalPurpleItemsToSpawn)
         {
-            GameManager.Instance._purpleItemsSpawned++;
             //TODO: Check if more than 1 purple item has been spawned and check if the yellow item has spwaned before spawning a second purple item
-            SetPurpleItem();
+            if (GameManager.Instance._YellowItemsSpawned > 0 && GameManager.Instance._purpleItemsSpawned > 0)
+                SetPurpleItem();
+            else if (GameManager.Instance._purpleItemsSpawned < 1)
+                SetPurpleItem();
+            else
+                SetYellowItem();
         }
         else if(GameManager.Instance.SpawnYellowItem())
             SetYellowItem();
@@ -223,6 +227,8 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
     {
         _ItemType = ItemType.MotionItem;
         _Image.sprite = _PurpleItemSprite;
+        GameManager.Instance._purpleItemsSpawned++;
+
         //_Image.color = Color.blue;
     }
 
@@ -230,6 +236,7 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
     {
         _ItemType = ItemType.SemiMotionItem;
         SetSprite(_YellowItemSprite);
+        GameManager.Instance._YellowItemsSpawned++;
     }
 
     private void SetRedItem()
@@ -357,6 +364,7 @@ public class Buttons : MonoBehaviour , IPointerDownHandler, IPointerUpHandler, I
 
         _rect.anchoredPosition = new Vector2(_rect.anchoredPosition.x, _originalYPosition + offsetY);
     }
+
     public void Unfreeze()
     {
         if (_ItemType == ItemType.FrozenItem)

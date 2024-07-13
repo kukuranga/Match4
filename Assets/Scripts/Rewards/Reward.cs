@@ -30,6 +30,7 @@ public class Reward : ScriptableObject
 
         if (m > _Cost)
         {
+            StatsManager.Instance.AddToTotalNumberOfUpgrades(1);
             ButtonManager.Instance.PayCost(_Cost);
             _Payable = true;
             return true;

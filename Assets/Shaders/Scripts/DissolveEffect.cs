@@ -11,15 +11,15 @@ public class DissolveEffect : MonoBehaviour
 
     private void FixedUpdate()
     {
-    //    if(_isDisolveing)
-    //    {
-    //        _DissolveAmount = Mathf.Clamp01(_DissolveAmount + Time.deltaTime);
-    //        _Mat.SetFloat("_DissolveAmount", _DissolveAmount);
-    //    }
-    //    else
-    //    {
-    //        _DissolveAmount = Mathf.Clamp01(_DissolveAmount - Time.deltaTime);
-    //        _Mat.SetFloat("_DissolveAmount", _DissolveAmount);
-    //    }
+        if (_isDisolveing)
+        {
+            _DissolveAmount = Mathf.Clamp01(_DissolveAmount + Time.deltaTime);
+            _Mat.SetFloat("_DissolveAmount", _DissolveAmount);
+        }
+        else
+        {
+            _DissolveAmount = Mathf.Clamp01(_DissolveAmount - Time.deltaTime);
+            _Mat.SetFloat("_DissolveAmount", _DissolveAmount);
+        }
     }
 }
